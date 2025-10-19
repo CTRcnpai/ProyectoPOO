@@ -7,9 +7,8 @@ import javax.swing.JOptionPane;
  * @author Cristopher Cardoza
  */
 public class Repuesto {
-    
+
     // Definición de Atributos
-    
     String codigo; // Formato: R###
     String nombreRepuesto;
     String marcaRepuesto;
@@ -19,12 +18,24 @@ public class Repuesto {
     int stockRepuesto;
     int stockMinimoRepuesto;
     
-    public void MostrarRepuestos (){
-        if (stockRepuesto <= 0) {
-            System.out.println("hola mundo");
-        }else{
-            System.out.println("adios mundo");
+    public void MostrarRepuestos() {
+        if (codigo != "null") {
+            System.out.println(nombreRepuesto);
         }
     }
-    
+
+    public void AgregarRepuesto() {
+        
+        if (stockRepuesto < 2) {
+            for (int i = 1; i < 2; i++) {
+                codigo = "R" + i;
+                System.out.println(codigo);
+            }
+        } else {
+            System.out.println("No hay más espacio para repuestos");
+        }
+        
+        nombreRepuesto = JOptionPane.showInputDialog("Ingrese el nombre del producto");
+        
+    }
 }
