@@ -21,6 +21,8 @@ public class Repuesto {
     public void MostrarRepuestos() {
         if (codigo != "null") {
             System.out.println(nombreRepuesto);
+        } else {
+            System.out.println("No hay repuestos disponibles");
         }
     }
 
