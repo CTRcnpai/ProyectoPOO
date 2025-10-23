@@ -8,8 +8,9 @@ public enum Categoria {
     
     Filtros, 
     Frenos, 
-    Suspensión, 
-    Eléctrico, 
-    Lubricantes
+    Suspension, 
+    Electrico, 
+    Lubricantes,
+    Error // Si el usuario no usa la variable correcta, el predeterminado va a ser error
     
 }
