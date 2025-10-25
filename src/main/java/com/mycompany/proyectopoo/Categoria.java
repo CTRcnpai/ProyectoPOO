@@ -10,7 +10,6 @@ public enum Categoria {
     Frenos, 
     Suspension, 
     Electrico, 
-    Lubricantes,
-    Error // Si el usuario no usa la variable correcta, el predeterminado va a ser error
+    Lubricantes
     
 }

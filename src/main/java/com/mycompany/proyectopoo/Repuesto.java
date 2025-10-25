@@ -8,46 +8,72 @@ import javax.swing.JOptionPane;
  */
 public class Repuesto {
 
-    // Definición de Atributos
+    // === Definición de Atributos ===
+    // --- Texto ---
     String codigo; // Formato: R###
     String nombreRepuesto;
     String marcaRepuesto;
-    String compatibilidadRepuesto_modelo; // Formato: modelo/año/motor
-    String compatibilidadRepuesto_anho;
+    String compatibilidadRepuesto_modelo;
     String compatibilidadRepuesto_motor;
+
+    // --- Enum ---
     Categoria categoria;
-    double precioVentaRepuesto; // var > 0
+
+    // --- Numeros (int / double)
+    int compatibilidadRepuesto_anho;
+    double precioVentaRepuesto;
     int stockRepuesto;
     int stockMinimoRepuesto;
 
-    // Definición de Métodos
+    // === Definición de Métodos ===
     public void MostrarRepuestos() {
         // Método para mostrar todos los repuestos
-            System.out.println("Código: " + codigo);
-            System.out.println("Nombre: " + nombreRepuesto);
-            System.out.println("Marca: " + marcaRepuesto);
-            System.out.println("Compatibilidad: " + compatibilidadRepuesto_modelo + "/" + compatibilidadRepuesto_anho + "/" + compatibilidadRepuesto_motor);
-            System.out.println("Categoria: " + categoria);
-            System.out.println("Precio ($): " + precioVentaRepuesto);
-            System.out.println("Strock: " + stockRepuesto);
-            System.out.println("Stock Min: " + stockMinimoRepuesto);
-            System.out.println("====================================");
+        System.out.println("Código: " + codigo);
+        System.out.println("Nombre: " + nombreRepuesto);
+        System.out.println("Marca: " + marcaRepuesto);
+        System.out.println("Compatibilidad: " + compatibilidadRepuesto_modelo + "/" + compatibilidadRepuesto_anho + "/" + compatibilidadRepuesto_motor);
+        System.out.println("Categoria: " + categoria);
+        System.out.println("Precio ($): " + precioVentaRepuesto);
+        System.out.println("Strock: " + stockRepuesto);
+        System.out.println("Stock Min: " + stockMinimoRepuesto);
+        System.out.println("====================================");
 
     }
 
     public void AgregarRepuesto() {
-        // Método para agregar repuestos
+        // === Método para agregar repuestos ===
 
+        // === Variables de validación del formato ===
+        // --- General ---
+        String errorDeFormato = "noHayError";
+
+        // --- Números ---
+        boolean esNumero = true;
+        String compatibilidadRepuesto_anhoSTR; // STR para validación futura del formato
+        String precioVentaRepuestoSTR; // STR para validación futura del formato
+        String stockRepuestoSTR; // STR para validación futura del formato
+        String stockMinimoRepuestoSTR; // STR para validación futura del formato
+
+        // === Petición de datos ===
         nombreRepuesto = JOptionPane.showInputDialog("Ingrese el nombre del producto");
         marcaRepuesto = JOptionPane.showInputDialog("Ingrese la marca del repuesto");
 
-        // Separe la compatibilidad en 3 secciones para solo unirlar en un string separados por "/"
+        // --- Separé la compatibilidad en 3 secciones para solo utilizar en un string separados por "/" al momento de mostrar ---
         compatibilidadRepuesto_modelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
-        compatibilidadRepuesto_anho = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
 
-        // Ya que debe seguir un formato, la condicional es para asegurar que sigue el formato modelo/año/motor el siguiente condicional es para asegurar que sea correcto
-        if (compatibilidadRepuesto_anho.length() != 4) {
-            compatibilidadRepuesto_anho = "error";
+        // --- Verificación de que el año tenga el formato correcto ---
+        compatibilidadRepuesto_anhoSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+
+        for (int i = 0; i < compatibilidadRepuesto_anhoSTR.length(); i++) {
+            if (!(compatibilidadRepuesto_anhoSTR.charAt(i) >= '0' && compatibilidadRepuesto_anhoSTR.charAt(i) <= '9')
+                    || (compatibilidadRepuesto_anhoSTR.length() != 4)) {
+                errorDeFormato = "error_compatibilidadRepuesto_anho";
+                break;
+            } else {
+                compatibilidadRepuesto_anho = Integer.parseInt(compatibilidadRepuesto_anhoSTR);
+                errorDeFormato = "noHayError";
+                break;
+            }
         }
 
         compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
@@ -85,17 +111,82 @@ public class Repuesto {
                 categoria = categoria.Lubricantes;
                 break;
             default:
-                categoria = categoria.Error;
+                errorDeFormato = "error_compatibilidadRepuesto_motor";
         }
 
-        precioVentaRepuesto = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto"));
-
-        // El precio debe ser mayor a 0. El siguiente condicional es para asegurar que se cumpla.
-        if (precioVentaRepuesto <= 0) {
-            precioVentaRepuesto = 0;
+        // --- PRECIO DE VENTA: Verificación de que se hayan ingresado solo números ---
+        precioVentaRepuestoSTR = JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto");
+        for (int i = 0; i < precioVentaRepuestoSTR.length(); i++) {
+            if (!(precioVentaRepuestoSTR.charAt(i) >= '0' && precioVentaRepuestoSTR.charAt(i) <= '9')) {
+                esNumero = false;
+                errorDeFormato = "error_precioVentaRepuestoSTR";
+                break;
+            }
         }
 
-        stockRepuesto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de unidades"));
-        stockMinimoRepuesto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)"));
+        if (esNumero == true) {
+            double precioVentaRepuesto = Double.parseDouble(precioVentaRepuestoSTR);
+        }
+
+        // --- STOCK DEL REPUESTO: Verificación de que se hayan ingresado solo números ---
+        stockRepuestoSTR = JOptionPane.showInputDialog("Ingrese la cantidad de unidades");
+        for (int i = 0; i < stockRepuestoSTR.length(); i++) {
+            if (!(stockRepuestoSTR.charAt(i) >= '0' && stockRepuestoSTR.charAt(i) <= '9')) {
+                esNumero = false;
+                errorDeFormato = "error_stockRepuestoSTR";
+                break;
+            }
+        }
+
+        if (esNumero == true) {
+            stockRepuesto = Integer.parseInt(stockRepuestoSTR);
+        }
+
+        // --- STOCK MÍNIMO: Verificación de que se hayan ingresado solo números ---
+        stockMinimoRepuestoSTR = JOptionPane.showInputDialog("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)");
+        for (int i = 0; i < stockMinimoRepuestoSTR.length(); i++) {
+            if (!(stockMinimoRepuestoSTR.charAt(i) >= '0' && stockMinimoRepuestoSTR.charAt(i) <= '9')) {
+                esNumero = false;
+                errorDeFormato = "error_stockMinimoSTR";
+                break;
+            }
+        }
+
+        if (esNumero == true) {
+            stockMinimoRepuesto = Integer.parseInt(stockMinimoRepuestoSTR);
+        }
+
+        // === Aquí se valida si hay algún error, se le indica al usuario el error y se le ofrece ingresar la información otra vez o cancelar la acción ===
+        if (errorDeFormato != "noHayError") {
+            int optFormato = 0;
+
+            while (optFormato != 2) {
+                optFormato = Integer.parseInt(JOptionPane.showInputDialog("""
+                                                                          El formato de la información no es el correcto.
+                                                                          ¿Desea agregar el dato de nuevo?
+                                                                          1. Sí
+                                                                          2. No
+                                                                          """));
+                if (optFormato == 1) {
+                    switch (errorDeFormato) {
+                        // ERROR DE FORMATO: AÑO
+                        case "error_compatibilidadRepuesto_anho":
+                            compatibilidadRepuesto_anhoSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+
+                            for (int i = 0; i < compatibilidadRepuesto_anhoSTR.length(); i++) {
+                                if (!(compatibilidadRepuesto_anhoSTR.charAt(i) >= '0' && compatibilidadRepuesto_anhoSTR.charAt(i) <= '9')
+                                        || (compatibilidadRepuesto_anhoSTR.length() != 4)) {
+                                    errorDeFormato = "error_compatibilidadRepuesto_anho";
+                                    break;
+                                } else {
+                                    compatibilidadRepuesto_anho = Integer.parseInt(compatibilidadRepuesto_anhoSTR);
+                                    errorDeFormato = "noHayError";
+                                    optFormato = 2;
+                                }
+                            }
+                    }
+                }
+            }
+        }
     }
 }
