@@ -12,7 +12,7 @@ public class Repuesto {
     String codigo; // Formato: R###
     String nombreRepuesto;
     String marcaRepuesto;
-    String compatibilidadRepuesto_Modelo; // Formato: modelo/año/motor
+    String compatibilidadRepuesto_modelo; // Formato: modelo/año/motor
     String compatibilidadRepuesto_anho;
     String compatibilidadRepuesto_motor;
     Categoria categoria;
@@ -23,14 +23,18 @@ public class Repuesto {
     // Definición de Métodos
     public void MostrarRepuestos() {
         // Método para mostrar todos los repuestos
+            System.out.println("Código: " + codigo);
+            System.out.println("Nombre: " + nombreRepuesto);
+            System.out.println("Marca: " + marcaRepuesto);
+            System.out.println("Compatibilidad: " + compatibilidadRepuesto_modelo + "/" + compatibilidadRepuesto_anho + "/" + compatibilidadRepuesto_motor);
+            System.out.println("Categoria: " + categoria);
+            System.out.println("Precio ($): " + precioVentaRepuesto);
+            System.out.println("Strock: " + stockRepuesto);
+            System.out.println("Stock Min: " + stockMinimoRepuesto);
+            System.out.println("====================================");
 
-        if (codigo != "null") {
-            System.out.println(nombreRepuesto);
-        } else {
-            System.out.println("No hay repuestos disponibles");
-        }
     }
-    
+
     public void AgregarRepuesto() {
         // Método para agregar repuestos
 
@@ -38,16 +42,16 @@ public class Repuesto {
         marcaRepuesto = JOptionPane.showInputDialog("Ingrese la marca del repuesto");
 
         // Separe la compatibilidad en 3 secciones para solo unirlar en un string separados por "/"
-        compatibilidadRepuesto_Modelo = JOptionPane.showInputDialog("Ingrese el modelo del dispositivo (modelo/año/motor)");
-        compatibilidadRepuesto_anho = JOptionPane.showInputDialog("Ingrese el año del repuesto del dispositivo (modelo/año/motor)");
+        compatibilidadRepuesto_modelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
+        compatibilidadRepuesto_anho = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
 
         // Ya que debe seguir un formato, la condicional es para asegurar que sigue el formato modelo/año/motor el siguiente condicional es para asegurar que sea correcto
-        if (compatibilidadRepuesto_anho.length() != 3) {
+        if (compatibilidadRepuesto_anho.length() != 4) {
             compatibilidadRepuesto_anho = "error";
         }
-        
-        compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del dispositivo (modelo/año/motor)");
-        
+
+        compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
+
         int optcategoria = Integer.parseInt(JOptionPane.showInputDialog("""
                                                         Ingrese una categoria de la lista:
                                                         1. Filtros
@@ -83,15 +87,15 @@ public class Repuesto {
             default:
                 categoria = categoria.Error;
         }
-        
-        precioVentaRepuesto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto"));
+
+        precioVentaRepuesto = Float.parseFloat(JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto"));
 
         // El precio debe ser mayor a 0. El siguiente condicional es para asegurar que se cumpla.
         if (precioVentaRepuesto <= 0) {
             precioVentaRepuesto = 0;
         }
-        
-        stockRepuesto = Integer.parseInt("Ingrese la cantidad de unidades");
-        stockMinimoRepuesto = Integer.parseInt("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)");
+
+        stockRepuesto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad de unidades"));
+        stockMinimoRepuesto = Integer.parseInt(JOptionPane.showInputDialog("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)"));
     }
 }

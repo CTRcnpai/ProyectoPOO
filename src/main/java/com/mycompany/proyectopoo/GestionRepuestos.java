@@ -35,19 +35,26 @@ public class GestionRepuestos {
 
                 // 1. Mostrar todos los repuestos
                 case 1:
-                    repuesto1.MostrarRepuestos();
-                    repuesto2.MostrarRepuestos();
+                    if (repuesto1.codigo == null && repuesto2.codigo == null) {
+                        System.out.println("No hay repuestos disponibles");
+                    } if (repuesto1.codigo != null) {
+                        repuesto1.MostrarRepuestos();
+                    } if (repuesto2.codigo != null) {
+                        repuesto2.MostrarRepuestos();
+                    }
+
                     break;
                 // 2. Agregar repuesto
                 case 2:
-                    if (repuesto1.nombreRepuesto != "null") {
+                    if (repuesto1.nombreRepuesto == null) {
                         repuesto1.codigo = "R001";
                         repuesto1.AgregarRepuesto();
-                    } else if (repuesto2.nombreRepuesto != "null") {
+                    } else if (repuesto2.nombreRepuesto == null) {
                         repuesto2.codigo = "R002";
                         repuesto2.AgregarRepuesto();
-                    }else{
-                        System.out.println("No hay espacio para repuestos");}
+                    } else {
+                        System.out.println("No hay espacio para repuestos");
+                    }
                     break;
                 // 3. Editar repuesto
                 case 3:
