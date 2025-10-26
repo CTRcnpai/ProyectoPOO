@@ -327,7 +327,7 @@ public class Repuesto {
                     stockMinimoRepuesto = 0;
                     optFormato = 2;
                 } else {
-                   JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo");
+                   JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo.");
                 }
             }
         }
