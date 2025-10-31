@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Cristopher Cardoza
+ * 
  */
 public class GestionRepuestosClase {
     // Llamada a objetos. Por el momento, al no poder usar listas 

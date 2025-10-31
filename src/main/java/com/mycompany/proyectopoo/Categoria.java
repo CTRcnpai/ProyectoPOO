@@ -3,6 +3,7 @@ package com.mycompany.proyectopoo;
 /**
  *
  * @author cnpai
+ * 
  */
 public enum Categoria {
     
