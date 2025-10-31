@@ -10,20 +10,20 @@ public class Repuesto {
 
     // === Definición de Atributos ===
     // --- Texto ---
-    String codigo; // Formato: R###
-    String nombreRepuesto;
-    String marcaRepuesto;
-    String compatibilidadRepuesto_modelo;
-    String compatibilidadRepuesto_motor;
+    private String codigo; // Formato: R###
+    private String nombreRepuesto;
+    private String marcaRepuesto;
+    private String compatibilidadRepuesto_modelo;
+    private String compatibilidadRepuesto_motor;
 
     // --- Enum ---
-    Categoria categoria;
+    private Categoria categoria;
 
     // --- Numeros (int / double)
-    int compatibilidadRepuesto_anho;
-    double precioVentaRepuesto;
-    int stockRepuesto;
-    int stockMinimoRepuesto;
+    private int compatibilidadRepuesto_anho;
+    private double precioVentaRepuesto;
+    private int stockRepuesto;
+    private int stockMinimoRepuesto;
 
     // === Definición de Métodos ===
     public void MostrarRepuestos() {
@@ -40,6 +40,7 @@ public class Repuesto {
 
     }
 
+    @SuppressWarnings("static-access")
     public void AgregarRepuesto() {
         // --- Método para agregar repuestos ---
 
@@ -309,9 +310,8 @@ public class Repuesto {
                     }
                 } else if (optFormato == 2) {
                     // --- USUARIO DESEA CANCELAR ---
-                    
+
                     // === Reseteo de Atributos ===
-                    
                     // --- Texto ---
                     codigo = null; // Formato: R###
                     nombreRepuesto = null;
@@ -327,9 +327,90 @@ public class Repuesto {
                     stockMinimoRepuesto = 0;
                     optFormato = 2;
                 } else {
-                   JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo.");
+                    JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo.");
                 }
             }
         }
+    }
+
+    // === Getters & Setters ===
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombreRepuesto() {
+        return nombreRepuesto;
+    }
+
+    public void setNombreRepuesto(String nombreRepuesto) {
+        this.nombreRepuesto = nombreRepuesto;
+    }
+
+    public String getMarcaRepuesto() {
+        return marcaRepuesto;
+    }
+
+    public void setMarcaRepuesto(String marcaRepuesto) {
+        this.marcaRepuesto = marcaRepuesto;
+    }
+
+    public String getCompatibilidadRepuesto_modelo() {
+        return compatibilidadRepuesto_modelo;
+    }
+
+    public void setCompatibilidadRepuesto_modelo(String compatibilidadRepuesto_modelo) {
+        this.compatibilidadRepuesto_modelo = compatibilidadRepuesto_modelo;
+    }
+
+    public String getCompatibilidadRepuesto_motor() {
+        return compatibilidadRepuesto_motor;
+    }
+
+    public void setCompatibilidadRepuesto_motor(String compatibilidadRepuesto_motor) {
+        this.compatibilidadRepuesto_motor = compatibilidadRepuesto_motor;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public int getCompatibilidadRepuesto_anho() {
+        return compatibilidadRepuesto_anho;
+    }
+
+    public void setCompatibilidadRepuesto_anho(int compatibilidadRepuesto_anho) {
+        this.compatibilidadRepuesto_anho = compatibilidadRepuesto_anho;
+    }
+
+    public double getPrecioVentaRepuesto() {
+        return precioVentaRepuesto;
+    }
+
+    public void setPrecioVentaRepuesto(double precioVentaRepuesto) {
+        this.precioVentaRepuesto = precioVentaRepuesto;
+    }
+
+    public int getStockRepuesto() {
+        return stockRepuesto;
+    }
+
+    public void setStockRepuesto(int stockRepuesto) {
+        this.stockRepuesto = stockRepuesto;
+    }
+
+    public int getStockMinimoRepuesto() {
+        return stockMinimoRepuesto;
+    }
+
+    public void setStockMinimoRepuesto(int stockMinimoRepuesto) {
+        this.stockMinimoRepuesto = stockMinimoRepuesto;
     }
 }
