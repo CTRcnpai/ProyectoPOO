@@ -179,9 +179,9 @@ public class Negocio {
                         error_TipoNegocio = false;
                         optTipoNegocio = JOptionPane.showInputDialog("""
                                                   Eliga el tipo de negocio:
-                                                    1. Gasolinera,
-                                                    2. Taller,
-                                                    3. Venta_Repuestos,
+                                                    1. Gasolinera
+                                                    2. Taller
+                                                    3. Venta_Repuestos
                                                     4. Alquiler_Vehiculos
                                                   """);
 
