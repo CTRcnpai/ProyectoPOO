@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
  * @author Cristopher Cardoza
  * 
  */
-public class GestionRepuestosClase {
+public class GestionRepuestos {
     // Llamada a objetos. Por el momento, al no poder usar listas 
 
     Repuesto repuesto1 = new Repuesto();
@@ -25,18 +25,18 @@ public class GestionRepuestosClase {
 
         while (menuLoop) {
 
-            int optGestion = Integer.parseInt(JOptionPane.showInputDialog("""
+            String optGestion = JOptionPane.showInputDialog("""
                                                              1. Mostrar todos los repuestos
                                                              2. Agregar repuesto
                                                              3. Editar repuesto
                                                              4. Buscar repuesto
                                                              5. Reponer stock
                                                              6. Regresar
-                                                             """));
+                                                             """);
             switch (optGestion) {
 
                 // 1. Mostrar todos los repuestos
-                case 1:
+                case "1":
                     if (repuesto1.getCodigo() == null && repuesto2.getCodigo() == null) {
                         System.out.println("No hay repuestos disponibles");
                     }
@@ -49,7 +49,7 @@ public class GestionRepuestosClase {
 
                     break;
                 // 2. Agregar repuesto
-                case 2:
+                case "2":
                     if (repuesto1.getNombreRepuesto() == null) {
                         repuesto1.setCodigo("R001");
                         repuesto1.AgregarRepuesto();
@@ -61,22 +61,19 @@ public class GestionRepuestosClase {
                     }
                     break;
                 // 3. Editar repuesto
-                case 3:
+                case "3":
                     JOptionPane.showMessageDialog(null, "Opción no disponible aún");
-                    menuLoop = false;
                     break;
                 // 4. Buscar repuesto
-                case 4:
+                case "4":
                     JOptionPane.showMessageDialog(null, "Opción no disponible aún");
-                    menuLoop = false;
                     break;
                 // 5. Reponer stock
-                case 5:
+                case "5":
                     JOptionPane.showMessageDialog(null, "Opción no disponible aún");
-                    menuLoop = false;
                     break;
                 // 6. Regresar ESTO HAY QUE CAMBIARLO A QUE REGRESE AL MENU DE DISTRIBUIDORA
-                case 6:
+                case "6":
                     JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
                     menuLoop = false;
                     break;

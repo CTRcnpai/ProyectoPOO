@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Cristopher Cardoza
- * 
+ *
  */
 public class Repuesto {
 
@@ -41,7 +41,6 @@ public class Repuesto {
 
     }
 
-    @SuppressWarnings("static-access")
     public void AgregarRepuesto() {
         // --- Método para agregar repuestos ---
 

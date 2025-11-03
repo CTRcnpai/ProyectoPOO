@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 public class SubMenuDistribuidora {
 
     // === Creación de objetos (sub-menús) ===
-    GestionRepuestosClase gestionRepuestos = new GestionRepuestosClase();
+    GestionRepuestos gestionRepuestos = new GestionRepuestos();
 
     // === Sub-Menú de la opción de Distribuidora ===
     public void SubMenuDistribuidora() {
