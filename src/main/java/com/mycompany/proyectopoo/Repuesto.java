@@ -29,15 +29,27 @@ public class Repuesto {
     // === Definición de Métodos ===
     public void MostrarRepuestos() {
         // --- Método para mostrar todos los repuestos ---
-        System.out.println("Código: " + codigo);
-        System.out.println("Nombre: " + nombreRepuesto);
-        System.out.println("Marca: " + marcaRepuesto);
-        System.out.println("Compatibilidad: " + compatibilidadRepuesto_modelo + "/" + compatibilidadRepuesto_anho + "/" + compatibilidadRepuesto_motor);
-        System.out.println("Categoria: " + categoria);
-        System.out.println("Precio ($): " + precioVentaRepuesto);
-        System.out.println("Strock: " + stockRepuesto);
-        System.out.println("Stock Min: " + stockMinimoRepuesto);
-        System.out.println("====================================");
+        System.out.println(formatoColumna(codigo) + "|"
+                + formatoColumna(nombreRepuesto + "") + "|"
+                + formatoColumna(marcaRepuesto + "") + "|"
+                + formatoColumna(compatibilidadRepuesto_modelo + "/" + compatibilidadRepuesto_anho + "/" + compatibilidadRepuesto_motor + "") + "|"
+                + formatoColumna(categoria + "") + "|"
+                + formatoColumna(precioVentaRepuesto + "") + "|"
+                + formatoColumna(stockRepuesto + "") + "|"
+                + formatoColumna(stockMinimoRepuesto + ""));
+
+    }
+    // --- Método para mostrar todos los repuestos ---
+
+    public String formatoColumna(String dato) {
+        int numero = 20 - dato.length();
+        String datoFormato = dato;
+
+        for (int i = 0; i < numero; i++) {
+            datoFormato += " ";
+        }
+
+        return datoFormato;
 
     }
 

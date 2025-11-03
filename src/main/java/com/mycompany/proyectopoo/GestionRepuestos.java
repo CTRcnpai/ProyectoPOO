@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author Cristopher Cardoza
- * 
+ *
  */
 public class GestionRepuestos {
     // Llamada a objetos. Por el momento, al no poder usar listas 
@@ -18,7 +18,6 @@ public class GestionRepuestos {
     Repuesto repuesto2 = new Repuesto();
 
     // Submenú de Gestión de Repuestos y bucle del menu
-    
     // POR EL MOMENTO SOLAMENTE MOSTRAR Y AGREGAR FUNCIONARÁN
     public void menuGestionRepuesto() {
         boolean menuLoop = true;
@@ -40,11 +39,35 @@ public class GestionRepuestos {
                     if (repuesto1.getCodigo() == null && repuesto2.getCodigo() == null) {
                         System.out.println("No hay repuestos disponibles");
                     }
-                    if (repuesto1.getCodigo() != null) {
+
+                    if (repuesto1.getCodigo() != null && repuesto2.getCodigo() != null) {
+                        System.out.println(repuesto1.formatoColumna("Codigo") + "|"
+                                + repuesto1.formatoColumna("Nombre") + "|"
+                                + repuesto1.formatoColumna("Marca") + "|"
+                                + repuesto1.formatoColumna("Categoria") + "|"
+                                + repuesto1.formatoColumna("Compatibilidad") + "|"
+                                + repuesto1.formatoColumna("Precio ($)") + "|"
+                                + repuesto1.formatoColumna("Stock") + "|"
+                                + repuesto1.formatoColumna("Strock Min" + "|"));
                         repuesto1.MostrarRepuestos();
-                    }
-                    if (repuesto2.getCodigo() != null) {
                         repuesto2.MostrarRepuestos();
+                        break;
+                    } else if (repuesto1.getCodigo() != null) {
+                        System.out.println(repuesto1.formatoColumna("Codigo") + "|"
+                                + repuesto1.formatoColumna("Nombre") + "|"
+                                + repuesto1.formatoColumna("Marca") + "|"
+                                + repuesto1.formatoColumna("Categoria") + "|"
+                                + repuesto1.formatoColumna("Compatibilidad") + "|"
+                                + repuesto1.formatoColumna("Precio ($)") + "|"
+                                + repuesto1.formatoColumna("Stock") + "|"
+                                + repuesto1.formatoColumna("Strock Min" + "|"));
+                        repuesto1.MostrarRepuestos();
+
+                        if (repuesto2.getCodigo() != null) {
+                            repuesto2.MostrarRepuestos();
+                        }
+                        System.out.println("");
+                        break;
                     }
 
                     break;

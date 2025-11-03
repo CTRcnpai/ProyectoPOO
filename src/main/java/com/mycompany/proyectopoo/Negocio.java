@@ -1,4 +1,3 @@
-
 package com.mycompany.proyectopoo;
 
 import javax.swing.JOptionPane;
@@ -7,6 +6,7 @@ import javax.swing.JOptionPane;
  *
  * @author Cristopher Cardoza
  */
+
 public class Negocio {
 
     // === Definición de Atributos ===
@@ -28,14 +28,28 @@ public class Negocio {
     // === Definición de Métodos ===
     public void MostrarNegocios() {
         // --- Método para mostrar todos los negocios ---
-        System.out.println("Código: " + codigoNegocio);
-        System.out.println("Nombre: " + nombreNegocio);
-        System.out.println("Tipo de Negocio: " + tipoNegocio);
-        System.out.println("Contacto principal: " + contactoNegocio);
-        System.out.println("Telefono: " + telefonoNegocio);
-        System.out.println("Correo electronico: " + correoNegocio);
-        System.out.println("Direccion: " + direccionNegocio);
-        System.out.println("====================================");
+        // --- Método para mostrar todos los repuestos ---
+        System.out.println(formatoColumna(codigoNegocio) + "|"
+                + formatoColumna(nombreNegocio + "") + "|"
+                + formatoColumna(tipoNegocio + "") + "|"
+                + formatoColumna(contactoNegocio + "") + "|"
+                + formatoColumna(telefonoNegocio + "") + "|"
+                + formatoColumna(correoNegocio + "") + "|"
+                + formatoColumna(direccionNegocio + ""));
+
+    }
+    // --- Método para mostrar todos los repuestos ---
+
+    public String formatoColumna(String dato) {
+        int numero = 20 - dato.length();
+        String datoFormato = dato;
+
+        for (int i = 0; i < numero; i++) {
+            datoFormato += " ";
+        }
+
+        return datoFormato;
+
     }
 
     public void AgregarNegocio() {

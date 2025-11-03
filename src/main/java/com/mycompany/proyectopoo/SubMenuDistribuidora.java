@@ -11,6 +11,7 @@ public class SubMenuDistribuidora {
 
     // === Creación de objetos (sub-menús) ===
     GestionRepuestos gestionRepuestos = new GestionRepuestos();
+    GestionNegocios gestionNegocios = new GestionNegocios();
 
     // === Sub-Menú de la opción de Distribuidora ===
     public void SubMenuDistribuidora() {
@@ -33,7 +34,7 @@ public class SubMenuDistribuidora {
             switch (optMenuPrincipal) {
                 // Opción Gestión de negocios
                 case "1":
-                    // INGRESAR CLASE DE GESTION DE NEGOCIOS
+                    gestionNegocios.menuGestionNegocios();
                     break;
 
                 // Opción Gestión de repuestos

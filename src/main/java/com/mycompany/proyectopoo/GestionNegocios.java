@@ -30,14 +30,37 @@ public class GestionNegocios {
             switch (optNegocio) {
 
                 case "1":
-                    if (negocio1.getCodigoNegocio() == null && negocio2.getCodigoNegocio() == null) {
-                        System.out.println("No hay negocios disponibles");
+                    if (negocio1.getCodigoNegocio() == null && negocio1.getCodigoNegocio() == null) {
+                        System.out.println("No hay repuestos disponibles");
                     }
-                    if (negocio1.getCodigoNegocio() != null) {
+
+                    if (negocio1.getCodigoNegocio() != null && negocio2.getCodigoNegocio() != null) {
+                        System.out.println(negocio1.formatoColumna("Codigo") + "|"
+                                + negocio1.formatoColumna("Nombre") + "|"
+                                + negocio1.formatoColumna("Marca") + "|"
+                                + negocio1.formatoColumna("Categoria") + "|"
+                                + negocio1.formatoColumna("Compatibilidad") + "|"
+                                + negocio1.formatoColumna("Precio ($)") + "|"
+                                + negocio1.formatoColumna("Stock") + "|"
+                                + negocio1.formatoColumna("Strock Min" + "|"));
                         negocio1.MostrarNegocios();
-                    }
-                    if (negocio2.getCodigoNegocio() != null) {
-                        negocio2.MostrarNegocios();
+                        negocio1.MostrarNegocios();
+                        break;
+                    } else if (negocio1.getCodigoNegocio() != null) {
+                        System.out.println(negocio1.formatoColumna("Codigo") + "|"
+                                + negocio1.formatoColumna("Nombre") + "|"
+                                + negocio1.formatoColumna("Tipo") + "|"
+                                + negocio1.formatoColumna("Contacto") + "|"
+                                + negocio1.formatoColumna("Teléfono") + "|"
+                                + negocio1.formatoColumna("Correo") + "|"
+                                + negocio1.formatoColumna("Dirección" + "|"));
+                        negocio1.MostrarNegocios();
+
+                        if (negocio2.getCodigoNegocio() != null) {
+                            negocio2.MostrarNegocios();
+                        }
+                        System.out.println("");
+                        break;
                     }
 
                     break;
@@ -62,6 +85,7 @@ public class GestionNegocios {
                     break;
                 case "5":
                     JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
+                    menuLoop = false;
                     break;
                 // OptNegocio invalida
                 default:
