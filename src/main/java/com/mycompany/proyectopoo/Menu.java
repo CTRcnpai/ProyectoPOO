@@ -4,7 +4,11 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Cristopher Cardoza
+ * @authors
+ * Cristopher Cardoza Valdes
+ * Felipe Mendez Vieto
+ * Braulio Saravia Latinez
+ * Maite Diaz Ramirez
  * 
  */
 public class Menu {
