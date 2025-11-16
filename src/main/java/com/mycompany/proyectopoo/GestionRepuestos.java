@@ -53,7 +53,7 @@ public class GestionRepuestos {
                     break;
                 // 3. Editar repuesto
                 case "3":
-                    JOptionPane.showMessageDialog(null, "Opción no disponible aún");
+                    editarRepuesto(repuestos);
                     break;
                 // 4. Buscar repuesto
                 case "4":
@@ -157,7 +157,7 @@ public class GestionRepuestos {
             case "2":
                 categoria = categoria.Frenos;
                 break;
-            // 3. SUSPENCIÓN
+            // 3. SUSPENSIÓN
             case "3":
                 categoria = categoria.Suspension;
                 break;
@@ -181,10 +181,14 @@ public class GestionRepuestos {
                 error_precioVentaRepuestoSTR = true;
                 break;
             }
+
         }
 
         if (error_precioVentaRepuestoSTR == false) {
             precioVentaRepuesto = Double.parseDouble(precioVentaRepuestoSTR);
+            if (precioVentaRepuesto < 0.0) {
+                error_precioVentaRepuestoSTR = true;
+            }
         }
 
         // --- STOCK DEL REPUESTO: Verificación de que se hayan ingresado solo números ---
@@ -214,19 +218,46 @@ public class GestionRepuestos {
         // === Aquí se valida si hay algún error, se le indica al usuario el error y se le ofrece ingresar la información otra vez o cancelar la acción ===
         if (error_compatibilidadRepuesto_anho || error_categoria
                 || error_precioVentaRepuestoSTR || error_stockRepuestoSTR || error_stockMinimoSTR) {
+
             int optFormato = 0;
 
             // --- Bucle while para permitir al usuario elegir si desea hacer correciones o no las veces que sea necesario ---
             while (optFormato != 2) {
 
-                optFormato = Integer.parseInt(JOptionPane.showInputDialog("""
-                                                                          El formato de la información no es el correcto.
-                                                                          ¿Desea agregar el dato de nuevo?
-                                                                          1. Sí
-                                                                          2. No
-                                                                          """));
+                String mensajeError = "La información posee un formato incorrecto en: \n";
 
-                if (optFormato == 1) {
+                if (error_compatibilidadRepuesto_anho) {
+                    mensajeError += "- El formato del año del repuesto.\n";
+                }
+                if (error_categoria) {
+                    mensajeError += "- La opción de categoría.\n";
+                }
+                if (error_precioVentaRepuestoSTR) {
+                    mensajeError += "- El formato del precio de venta.\n";
+                }
+                if (error_stockRepuestoSTR) {
+                    mensajeError += "- El formato del stock.\n";
+                }
+                if (error_stockMinimoSTR) {
+                    mensajeError += "- El formato del stock mínimo.\n";
+                }
+
+                String opcionesReintento[] = {"Reintentar", "Cancelar"};
+
+                optFormato = JOptionPane.showOptionDialog(
+                        null,
+                        mensajeError
+                        + "\n¿Desea agregar el dato de nuevo? "
+                        + "\n1. Sí "
+                        + "\n2. No",
+                        "CONFIRMACIÓN",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcionesReintento,
+                        "No");
+
+                if (optFormato == 0) {
                     // --- USUARIO DESEA SEGUIR EDITANDO ---
 
                     // AÑO: Verificación de que el año tenga el formato correcto ---
@@ -279,7 +310,7 @@ public class GestionRepuestos {
                                 categoria = categoria.Frenos;
                                 error_categoria = false;
                                 break;
-                            // 3. SUSPENCIÓN
+                            // 3. SUSPENSIÓN
                             case "3":
                                 categoria = categoria.Suspension;
                                 error_categoria = false;
@@ -308,10 +339,14 @@ public class GestionRepuestos {
                                 error_precioVentaRepuestoSTR = true;
                                 break;
                             }
+
                         }
 
                         if (error_precioVentaRepuestoSTR == false) {
                             precioVentaRepuesto = Double.parseDouble(precioVentaRepuestoSTR);
+                            if (precioVentaRepuesto < 0.0) {
+                                error_precioVentaRepuestoSTR = true;
+                            }
                         }
                     }
 
@@ -356,11 +391,9 @@ public class GestionRepuestos {
                             && !error_categoria) {
                         optFormato = 2;
                     }
-                } else if (optFormato == 2) {
+                } else if (optFormato == 1 || optFormato == -1) {
                     JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreRepuesto + "\nVolviendo al menú de gestión de repuestos.");
                     return;
-                } else {
-                    JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo.");
                 }
             }
         }
@@ -395,5 +428,409 @@ public class GestionRepuestos {
                 JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreRepuesto + "\nVolviendo al menú de gestión de repuestos.");
                 break;
         }
+    }
+
+    public void editarRepuesto(Repuesto[] repuestos) {
+
+        if (Repuesto.getCantidad() == 0) {
+            JOptionPane.showMessageDialog(null, """
+                                                Por el momento no hay repuestos. 
+                                                Por favor agregue un repuesto para usar esta característica.
+                                                Volviendo al menú de Gestión de Repuestos.
+                                                """);
+            return;
+        }
+
+        String codigoBuscar = JOptionPane.showInputDialog("""
+                                                          Ingrese el código del repuesto a editar
+                                                          Formato: R###
+                                                          """);
+
+        for (int i = 0; i < Repuesto.getCantidad(); i++) {
+
+            if (repuestos[i].getCodigo().equalsIgnoreCase(codigoBuscar)) {
+
+                boolean error_compatibilidadRepuesto_anho = false;
+                boolean error_categoria = false;
+                boolean error_precioVentaRepuestoSTR = false;
+                boolean error_stockRepuestoSTR = false;
+                boolean error_stockMinimoSTR = false;
+                String nuevoModelo = "";
+                String nuevoMotor = "";
+
+                int opt = Integer.parseInt(JOptionPane.showInputDialog(
+                        "=== Menu de actualización ==="
+                        + "\n1. Nombre (Actual: " + repuestos[i].getNombreRepuesto() + ")"
+                        + "\n2. Marca (Actual: " + repuestos[i].getMarcaRepuesto() + ")"
+                        + "\n3. Compatibilidad (modelo/año/motor) (Actual: " + repuestos[i].getCompatibilidadRepuesto_modelo()
+                        + repuestos[i].getCompatibilidadRepuesto_anho()
+                        + repuestos[i].getCompatibilidadRepuesto_motor() + ")"
+                        + "\n4. Categoría (Actual: " + repuestos[i].getNombreRepuesto() + ")"
+                        + "\n5. Precio de venta ($) (Actual: $" + repuestos[i].getNombreRepuesto() + ")"
+                        + "\n6. Stock (unidades) (Actual: " + repuestos[i].getNombreRepuesto() + ")"
+                        + "\n7. Stock mínimo (umbral) (Actual: " + repuestos[i].getNombreRepuesto() + ")"
+                        + "\n8. Salir"));
+
+                do {
+
+                    switch (opt) {
+                        case 1: // Editar Nombre
+                            String nuevoRepuesto = JOptionPane.showInputDialog("Ingrese el nombre del producto");
+                            repuestos[i].setNombreRepuesto(nuevoRepuesto);
+                            JOptionPane.showMessageDialog(null, "Nombre actualizado con éxito a " + repuestos[i].getNombreRepuesto());
+                            opt = 8;
+                            break;
+                        case 2: // Editar Marca
+                            String nuevaMarca = JOptionPane.showInputDialog("Ingrese la marca del repuesto");
+                            repuestos[i].setMarcaRepuesto(nuevaMarca);
+                            JOptionPane.showMessageDialog(null, "Marca actualizada con éxito a " + repuestos[i].getMarcaRepuesto());
+                            opt = 8;
+                            break;
+
+                        case 3: // Editar Compatibilidad
+
+                            // MODELO: Texto plano, no necesita validación
+                            nuevoModelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
+
+                            // AÑO: Verificación de que el año tenga el formato correcto ---
+                            String nuevoAnioSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+
+                            for (int j = 0; j < nuevoAnioSTR.length(); j++) {
+                                if (!(nuevoAnioSTR.charAt(j) >= '0' && nuevoAnioSTR.charAt(j) <= '9')) {
+                                    error_compatibilidadRepuesto_anho = true;
+                                    break;
+                                }
+                            }
+                            if (nuevoAnioSTR.length() != 4) {
+                                error_compatibilidadRepuesto_anho = true;
+                            }
+
+                            // MOTOR: Texto plano, no necesita validación
+                            nuevoMotor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
+
+                            if (error_compatibilidadRepuesto_anho == false) {
+                                repuestos[i].setCompatibilidadRepuesto_modelo(nuevoModelo);
+                                int nuevoAnho = Integer.parseInt(nuevoAnioSTR);
+                                repuestos[i].setCompatibilidadRepuesto_anho(nuevoAnho);
+                                repuestos[i].setCompatibilidadRepuesto_motor(nuevoMotor);
+                                JOptionPane.showMessageDialog(null, "Compatibilidad actualizada con éxito a " + repuestos[i].getCompatibilidadRepuesto_modelo()
+                                        + "/" + repuestos[i].getCompatibilidadRepuesto_anho()
+                                        + "/" + repuestos[i].getCompatibilidadRepuesto_motor());
+                                opt = 8;
+                            }
+
+                            break;
+
+                        case 4: // Editar Categoria
+                            String optcategoria = JOptionPane.showInputDialog("""
+                                                        Ingrese una categoria de la lista:
+                                                        1. Filtros
+                                                        2. Frenos 
+                                                        3, Suspensión
+                                                        4. Eléctrico
+                                                        5. Lubricantes
+                                                        """);
+
+                            // --- CATEGORIA: Enum de categoria y validación de errores ---
+                            switch (optcategoria) {
+
+                                // 1. FILTROS
+                                case "1":
+                                    repuestos[i].setCategoria(Categoria.Filtros);
+                                    break;
+                                // 2. FRENOS
+                                case "2":
+                                    repuestos[i].setCategoria(Categoria.Frenos);
+                                    break;
+                                // 3. SUSPENSIÓN
+                                case "3":
+                                    repuestos[i].setCategoria(Categoria.Suspension);
+                                    break;
+                                // 4. ELÉCTRICO
+                                case "4":
+                                    repuestos[i].setCategoria(Categoria.Electrico);
+                                    break;
+                                // 5. LUBRICANTES
+                                case "5":
+                                    repuestos[i].setCategoria(Categoria.Lubricantes);
+                                    break;
+                                // 
+                                default:
+                                    error_categoria = true;
+                            }
+                            break;
+
+                        case 5: // Editar Precio de venta
+                            String nuevoPrecioVentaSTR = JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto (Decimales separados por un punto)");
+
+                            for (int j = 0; j < nuevoPrecioVentaSTR.length(); j++) {
+                                if (!((nuevoPrecioVentaSTR.charAt(j) >= '0' && nuevoPrecioVentaSTR.charAt(j) <= '9') || nuevoPrecioVentaSTR.charAt(j) == '.')) {
+                                    error_precioVentaRepuestoSTR = true;
+                                    break;
+                                }
+                            }
+
+                            if (error_precioVentaRepuestoSTR == false) {
+                                double nuevoprecioVentaRepuesto = Double.parseDouble(nuevoPrecioVentaSTR);
+                                if (nuevoprecioVentaRepuesto < 0.0) {
+                                    error_precioVentaRepuestoSTR = true;
+                                    break;
+                                } else {
+                                    repuestos[i].setPrecioVentaRepuesto(nuevoprecioVentaRepuesto);
+                                }
+                            }
+                            break;
+
+                        case 6: // Editar Strock (unidades)
+
+                            // --- STOCK DEL REPUESTO: Verificación de que se hayan ingresado solo números ---
+                            String nuevoStockSTR = JOptionPane.showInputDialog("Ingrese la cantidad de unidades");
+                            for (int j = 0; j < nuevoStockSTR.length(); j++) {
+                                if (!(nuevoStockSTR.charAt(j) >= '0' && nuevoStockSTR.charAt(j) <= '9')) {
+                                    error_stockRepuestoSTR = true;
+                                    break;
+                                }
+                            }
+                            if (error_stockRepuestoSTR == false) {
+                                int nuevoStockRepuesto = Integer.parseInt(nuevoStockSTR);
+                                repuestos[i].setStockRepuesto(nuevoStockRepuesto);
+                            }
+                            break;
+                        case 7: // Editar Stock minimo
+
+                            // --- STOCK MÍNIMO: Verificación de que se hayan ingresado solo números ---
+                            String nuevoStockMinimoSTR = JOptionPane.showInputDialog("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)");
+                            for (int j = 0; j < nuevoStockMinimoSTR.length(); j++) {
+                                if (!(nuevoStockMinimoSTR.charAt(j) >= '0' && nuevoStockMinimoSTR.charAt(j) <= '9')) {
+                                    error_stockMinimoSTR = true;
+                                    break;
+                                }
+                            }
+                            if (error_stockMinimoSTR == false) {
+                                int nuevostockMinimo = Integer.parseInt(nuevoStockMinimoSTR);
+                                repuestos[i].setStockMinimoRepuesto(nuevostockMinimo);
+                            }
+                        case 8:
+                            JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
+                            break;
+
+                        default:
+                            JOptionPane.showMessageDialog(null, "Opción no valida, intente de nuevo");
+                            opt = Integer.parseInt(JOptionPane.showInputDialog(
+                                    "=== Menu de actualización ==="
+                                    + "\n1. Nombre (actual: " + repuestos[i].getNombreRepuesto() + ")"
+                                    + "\n2. Marca (actual: " + repuestos[i].getMarcaRepuesto() + ")"
+                                    + "\n3. Compatibilidad (modelo/año/motor)(actual: " + repuestos[i].getCompatibilidadRepuesto_modelo()
+                                    + repuestos[i].getCompatibilidadRepuesto_anho()
+                                    + repuestos[i].getCompatibilidadRepuesto_motor()) + ")"
+                                    + "\n4. Categoría (actual: " + repuestos[i].getNombreRepuesto() + ")"
+                                    + "\n5. Precio de venta ($) (actual: $" + repuestos[i].getNombreRepuesto() + ")"
+                                    + "\n6. Stock (unidades) (actual: " + repuestos[i].getNombreRepuesto() + ")"
+                                    + "\n7. Stock mínimo (umbral) (actual: " + repuestos[i].getNombreRepuesto() + ")"
+                                    + "\n8. Salir");
+                    }
+
+                    // === Aquí se valida si hay algún error, se le indica al usuario el error y se le ofrece ingresar la información otra vez o cancelar la acción ===
+                    if (error_compatibilidadRepuesto_anho || error_categoria
+                            || error_precioVentaRepuestoSTR || error_stockRepuestoSTR || error_stockMinimoSTR) {
+
+                        int optFormato = 0;
+
+                        // --- Bucle while para permitir al usuario elegir si desea hacer correciones o no las veces que sea necesario ---
+                        while (optFormato != 2) {
+
+                            String mensajeError = "La información posee un formato incorrecto en: \n";
+
+                            if (error_compatibilidadRepuesto_anho) {
+                                mensajeError += "- El formato del año del repuesto.\n";
+                            }
+                            if (error_categoria) {
+                                mensajeError += "- La opción de categoría.\n";
+                            }
+                            if (error_precioVentaRepuestoSTR) {
+                                mensajeError += "- El formato del precio de venta.\n";
+                            }
+                            if (error_stockRepuestoSTR) {
+                                mensajeError += "- El formato del stock.\n";
+                            }
+                            if (error_stockMinimoSTR) {
+                                mensajeError += "- El formato del stock mínimo.\n";
+                            }
+
+                            String opcionesReintento[] = {"Reintentar", "Cancelar"};
+
+                            optFormato = JOptionPane.showOptionDialog(
+                                    null,
+                                    mensajeError
+                                    + "\n¿Desea agregar el dato de nuevo? "
+                                    + "\n1. Sí "
+                                    + "\n2. No",
+                                    "CONFIRMACIÓN",
+                                    JOptionPane.DEFAULT_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,
+                                    opcionesReintento,
+                                    "No");
+
+                            if (optFormato == 0) {
+                                // --- USUARIO DESEA SEGUIR EDITANDO ---
+
+                                // AÑO: Verificación de que el año tenga el formato correcto ---
+                                if (error_compatibilidadRepuesto_anho) {
+
+                                    error_compatibilidadRepuesto_anho = false;
+
+                                    // AÑO: Verificación de que el año tenga el formato correcto ---
+                                    String nuevoAnioSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+
+                                    for (int j = 0; j < nuevoAnioSTR.length(); j++) {
+                                        if (!(nuevoAnioSTR.charAt(j) >= '0' && nuevoAnioSTR.charAt(j) <= '9')) {
+                                            error_compatibilidadRepuesto_anho = true;
+                                            break;
+                                        }
+                                    }
+                                    if (nuevoAnioSTR.length() != 4) {
+                                        error_compatibilidadRepuesto_anho = true;
+                                    }
+
+                                    if (error_compatibilidadRepuesto_anho == false) {
+                                        repuestos[i].setCompatibilidadRepuesto_modelo(nuevoModelo);
+                                        int nuevoAnho = Integer.parseInt(nuevoAnioSTR);
+                                        repuestos[i].setCompatibilidadRepuesto_anho(nuevoAnho);
+                                        repuestos[i].setCompatibilidadRepuesto_motor(nuevoMotor);
+                                        JOptionPane.showMessageDialog(null, "Compatibilidad actualizada con éxito a " + repuestos[i].getCompatibilidadRepuesto_modelo()
+                                                + "/" + repuestos[i].getCompatibilidadRepuesto_anho()
+                                                + "/" + repuestos[i].getCompatibilidadRepuesto_motor());
+                                        opt = 8;
+                                    }
+                                    break;
+                                }
+
+                                // --- CATEGORIA: Enum de categoria y validación de errores ---
+                                if (error_categoria) {
+
+                                    error_categoria = false;
+
+                                    String optcategoria = JOptionPane.showInputDialog("""
+                                                        Ingrese una categoria de la lista:
+                                                        1. Filtros
+                                                        2. Frenos 
+                                                        3, Suspensión
+                                                        4. Eléctrico
+                                                        5. Lubricantes
+                                                        """);
+
+                                    // --- CATEGORIA: Enum de categoria y validación de errores ---
+                                    switch (optcategoria) {
+
+                                        // 1. FILTROS
+                                        case "1":
+                                            repuestos[i].setCategoria(Categoria.Filtros);
+                                            break;
+                                        // 2. FRENOS
+                                        case "2":
+                                            repuestos[i].setCategoria(Categoria.Frenos);
+                                            break;
+                                        // 3. SUSPENSIÓN
+                                        case "3":
+                                            repuestos[i].setCategoria(Categoria.Suspension);
+                                            break;
+                                        // 4. ELÉCTRICO
+                                        case "4":
+                                            repuestos[i].setCategoria(Categoria.Electrico);
+                                            break;
+                                        // 5. LUBRICANTES
+                                        case "5":
+                                            repuestos[i].setCategoria(Categoria.Lubricantes);
+                                            break;
+                                        // 
+                                        default:
+                                            error_categoria = true;
+                                    }
+                                }
+
+                                // --- PRECIO DE VENTA: Verificación de que se hayan ingresado solo números ---
+                                if (error_precioVentaRepuestoSTR) {
+
+                                    error_precioVentaRepuestoSTR = false;
+
+                                    String nuevoPrecioVentaSTR = JOptionPane.showInputDialog("Ingrese el precio de venta del repuesto (Decimales separados por un punto)");
+
+                                    for (int j = 0; j < nuevoPrecioVentaSTR.length(); j++) {
+                                        if (!((nuevoPrecioVentaSTR.charAt(j) >= '0' && nuevoPrecioVentaSTR.charAt(j) <= '9') || nuevoPrecioVentaSTR.charAt(j) == '.')) {
+                                            error_precioVentaRepuestoSTR = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (error_precioVentaRepuestoSTR == false) {
+                                        double nuevoprecioVentaRepuesto = Double.parseDouble(nuevoPrecioVentaSTR);
+                                        if (nuevoprecioVentaRepuesto < 0.0) {
+                                            error_precioVentaRepuestoSTR = true;
+                                            break;
+                                        } else {
+                                            repuestos[i].setPrecioVentaRepuesto(nuevoprecioVentaRepuesto);
+                                        }
+                                    }
+                                }
+
+                                // --- STOCK DEL REPUESTO: Verificación de que se hayan ingresado solo números ---
+                                if (error_stockRepuestoSTR) {
+
+                                    error_stockRepuestoSTR = false;
+
+                                    String nuevoStockSTR = JOptionPane.showInputDialog("Ingrese la cantidad de unidades");
+                                    for (int j = 0; j < nuevoStockSTR.length(); j++) {
+                                        if (!(nuevoStockSTR.charAt(j) >= '0' && nuevoStockSTR.charAt(j) <= '9')) {
+                                            error_stockRepuestoSTR = true;
+                                            break;
+                                        }
+                                    }
+                                    if (error_stockRepuestoSTR == false) {
+                                        int nuevoStockRepuesto = Integer.parseInt(nuevoStockSTR);
+                                        repuestos[i].setStockRepuesto(nuevoStockRepuesto);
+                                    }
+                                }
+
+                                // --- STOCK MÍNIMO: Verificación de que se hayan ingresado solo números ---
+                                if (error_stockMinimoSTR) {
+
+                                    error_stockMinimoSTR = false;
+
+                                    String nuevoStockMinimoSTR = JOptionPane.showInputDialog("Ingrese la cantidad mínima de stock de los repuestos (Umbral de alerta)");
+                                    for (int j = 0; j < nuevoStockMinimoSTR.length(); j++) {
+                                        if (!(nuevoStockMinimoSTR.charAt(j) >= '0' && nuevoStockMinimoSTR.charAt(j) <= '9')) {
+                                            error_stockMinimoSTR = true;
+                                            break;
+                                        }
+                                    }
+                                    if (error_stockMinimoSTR == false) {
+                                        int nuevostockMinimo = Integer.parseInt(nuevoStockMinimoSTR);
+                                        repuestos[i].setStockMinimoRepuesto(nuevostockMinimo);
+                                    }
+                                }
+
+                                if (!error_compatibilidadRepuesto_anho
+                                        && !error_precioVentaRepuestoSTR
+                                        && !error_stockRepuestoSTR
+                                        && !error_stockMinimoSTR
+                                        && !error_categoria) {
+                                    optFormato = 2;
+                                }
+                            } else if (optFormato == 1 || optFormato == -1) {
+                                JOptionPane.showMessageDialog(null, "No se editó el repuesto " + repuestos[i].getCodigo() + "(" + repuestos[i].getCodigo() + ")"
+                                        + "\nVolviendo al menú de gestión de repuestos.");
+                                return;
+                            }
+                        }
+                    }
+
+                } while (opt != 8);
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe un repuesto con el código " + codigoBuscar
+                        + "\nVolviendo al menú de Gestión de Repuestos.");
+            }
+        }
+
     }
 }
