@@ -13,7 +13,6 @@ public class GestionRepuestos {
     Repuesto repuestos[] = new Repuesto[999];
 
     // Submenú de Gestión de Repuestos y bucle del menu
-    // POR EL MOMENTO SOLAMENTE MOSTRAR Y AGREGAR FUNCIONARÁN
     public void menuGestionRepuesto() {
         boolean menuLoop = true;
 
@@ -57,7 +56,7 @@ public class GestionRepuestos {
                     break;
                 // 4. Buscar repuesto
                 case "4":
-                    JOptionPane.showMessageDialog(null, "Opción no disponible aún");
+                    buscarRepuesto(repuestos);
                     break;
                 // 5. Reponer stock
                 case "5":
@@ -227,19 +226,19 @@ public class GestionRepuestos {
                 String mensajeError = "La información posee un formato incorrecto en: \n";
 
                 if (error_compatibilidadRepuesto_anho) {
-                    mensajeError += "- El formato del año del repuesto.\n";
+                    mensajeError += "- El formato del año del repuesto (####).\n";
                 }
                 if (error_categoria) {
-                    mensajeError += "- La opción de categoría.\n";
+                    mensajeError += "- La opción de categoría. (Opciónes solamente dentro del menú)\n";
                 }
                 if (error_precioVentaRepuestoSTR) {
-                    mensajeError += "- El formato del precio de venta.\n";
+                    mensajeError += "- El formato del precio de venta. (Solamente numeros o puntos y cifras mayores a cero)\n";
                 }
                 if (error_stockRepuestoSTR) {
-                    mensajeError += "- El formato del stock.\n";
+                    mensajeError += "- El formato del stock (Solamente numeros).\n";
                 }
                 if (error_stockMinimoSTR) {
-                    mensajeError += "- El formato del stock mínimo.\n";
+                    mensajeError += "- El formato del stock mínimo (Solamente numeros).\n";
                 }
 
                 String opcionesReintento[] = {"Reintentar", "Cancelar"};
@@ -247,9 +246,7 @@ public class GestionRepuestos {
                 optFormato = JOptionPane.showOptionDialog(
                         null,
                         mensajeError
-                        + "\n¿Desea agregar el dato de nuevo? "
-                        + "\n1. Sí "
-                        + "\n2. No",
+                        + "\n¿Desea agregar la información de nuevo?",
                         "CONFIRMACIÓN",
                         JOptionPane.DEFAULT_OPTION,
                         JOptionPane.QUESTION_MESSAGE,
@@ -431,7 +428,7 @@ public class GestionRepuestos {
     }
 
     public void editarRepuesto(Repuesto[] repuestos) {
-
+        // --- Metodo para editar objetos ---
         if (Repuesto.getCantidad() == 0) {
             JOptionPane.showMessageDialog(null, """
                                                 Por el momento no hay repuestos. 
@@ -537,22 +534,32 @@ public class GestionRepuestos {
                                 // 1. FILTROS
                                 case "1":
                                     repuestos[i].setCategoria(Categoria.Filtros);
+                                    JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
+                                    opt = 8;
                                     break;
                                 // 2. FRENOS
                                 case "2":
                                     repuestos[i].setCategoria(Categoria.Frenos);
+                                    JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
+                                    opt = 8;
                                     break;
                                 // 3. SUSPENSIÓN
                                 case "3":
                                     repuestos[i].setCategoria(Categoria.Suspension);
+                                    JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
+                                    opt = 8;
                                     break;
                                 // 4. ELÉCTRICO
                                 case "4":
                                     repuestos[i].setCategoria(Categoria.Electrico);
+                                    JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
+                                    opt = 8;
                                     break;
                                 // 5. LUBRICANTES
                                 case "5":
                                     repuestos[i].setCategoria(Categoria.Lubricantes);
+                                    JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
+                                    opt = 8;
                                     break;
                                 // 
                                 default:
@@ -577,6 +584,8 @@ public class GestionRepuestos {
                                     break;
                                 } else {
                                     repuestos[i].setPrecioVentaRepuesto(nuevoprecioVentaRepuesto);
+                                    JOptionPane.showMessageDialog(null, "El precio de venta fue actualizado con éxito a $" + repuestos[i].getPrecioVentaRepuesto());
+                                    opt = 8;
                                 }
                             }
                             break;
@@ -594,6 +603,8 @@ public class GestionRepuestos {
                             if (error_stockRepuestoSTR == false) {
                                 int nuevoStockRepuesto = Integer.parseInt(nuevoStockSTR);
                                 repuestos[i].setStockRepuesto(nuevoStockRepuesto);
+                                JOptionPane.showMessageDialog(null, "El stock fue actualizado con éxito a " + repuestos[i].getStockRepuesto());
+                                opt = 8;
                             }
                             break;
                         case 7: // Editar Stock minimo
@@ -609,6 +620,8 @@ public class GestionRepuestos {
                             if (error_stockMinimoSTR == false) {
                                 int nuevostockMinimo = Integer.parseInt(nuevoStockMinimoSTR);
                                 repuestos[i].setStockMinimoRepuesto(nuevostockMinimo);
+                                JOptionPane.showMessageDialog(null, "El stock fue actualizado con éxito a " + repuestos[i].getStockMinimoRepuesto());
+                                opt = 8;
                             }
                         case 8:
                             JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
@@ -642,19 +655,19 @@ public class GestionRepuestos {
                             String mensajeError = "La información posee un formato incorrecto en: \n";
 
                             if (error_compatibilidadRepuesto_anho) {
-                                mensajeError += "- El formato del año del repuesto.\n";
+                                mensajeError += "- El formato del año del repuesto (####).\n";
                             }
                             if (error_categoria) {
-                                mensajeError += "- La opción de categoría.\n";
+                                mensajeError += "- La opción de categoría. (Opciónes solamente dentro del menú)\n";
                             }
                             if (error_precioVentaRepuestoSTR) {
-                                mensajeError += "- El formato del precio de venta.\n";
+                                mensajeError += "- El formato del precio de venta. (Solamente numeros o puntos y cifras mayores a cero)\n";
                             }
                             if (error_stockRepuestoSTR) {
-                                mensajeError += "- El formato del stock.\n";
+                                mensajeError += "- El formato del stock (Solamente numeros).\n";
                             }
                             if (error_stockMinimoSTR) {
-                                mensajeError += "- El formato del stock mínimo.\n";
+                                mensajeError += "- El formato del stock mínimo (Solamente numeros).\n";
                             }
 
                             String opcionesReintento[] = {"Reintentar", "Cancelar"};
@@ -662,9 +675,7 @@ public class GestionRepuestos {
                             optFormato = JOptionPane.showOptionDialog(
                                     null,
                                     mensajeError
-                                    + "\n¿Desea agregar el dato de nuevo? "
-                                    + "\n1. Sí "
-                                    + "\n2. No",
+                                    + "\n¿Desea agregar la información de nuevo? ",
                                     "CONFIRMACIÓN",
                                     JOptionPane.DEFAULT_OPTION,
                                     JOptionPane.QUESTION_MESSAGE,
@@ -832,5 +843,44 @@ public class GestionRepuestos {
             }
         }
 
+    }
+
+    public void buscarRepuesto(Repuesto[] repuestos) {
+        // --- Metodo para buscar repuestos ---
+
+        // --- Paso 1: Filtro de compatibilidad ---
+        // Petición de datos
+        String compatibilidadRepuesto_modelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
+        String compatibilidadRepuesto_anhoSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+        String compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
+
+        // Configuración por si el cliente deja en blanco o elije cualquiera
+        if (compatibilidadRepuesto_modelo == null || compatibilidadRepuesto_modelo.equalsIgnoreCase("Cualquiera")) {
+
+        }
+
+        // Mostrar con el formato correcto
+        if (Repuesto.getCantidad() == 0) {
+            System.out.println("No hay repuestos disponibles");
+        } else {
+
+            for (int i = 0; i < Repuesto.getCantidad(); i++) {
+                System.out.println(repuestos[i].formatoColumna("Codigo") + "|"
+                        + repuestos[i].formatoColumna("Nombre") + "|"
+                        + repuestos[i].formatoColumna("Marca") + "|"
+                        + repuestos[i].formatoColumna("Categoria") + "|"
+                        + repuestos[i].formatoColumna("Compatibilidad") + "|"
+                        + repuestos[i].formatoColumna("Precio ($)") + "|"
+                        + repuestos[i].formatoColumna("Stock") + "|"
+                        + repuestos[i].formatoColumna("Strock Min" + "|"));
+
+                if (compatibilidadRepuesto_modelo == null || compatibilidadRepuesto_modelo.equalsIgnoreCase("Cualquiera")
+                        || compatibilidadRepuesto_anhoSTR == null || compatibilidadRepuesto_anhoSTR.equalsIgnoreCase("Cualquiera")
+                        || compatibilidadRepuesto_motor == null || compatibilidadRepuesto_motor.equalsIgnoreCase("Cualquiera")) {
+                    repuestos[i].MostrarRepuestos();
+                }
+
+            }
+        }
     }
 }
