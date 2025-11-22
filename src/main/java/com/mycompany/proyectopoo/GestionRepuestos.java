@@ -10,10 +10,11 @@ import javax.swing.JOptionPane;
 public class GestionRepuestos {
 
     // Listas de repuestos
-    Repuesto repuestos[] = new Repuesto[999];
+    private Repuesto repuestos[] = new Repuesto[999];
 
     // Submenú de Gestión de Repuestos y bucle del menu
     public void menuGestionRepuesto() {
+
         boolean menuLoop = true;
 
         while (menuLoop) {
@@ -33,15 +34,15 @@ public class GestionRepuestos {
                     if (Repuesto.getCantidad() == 0) {
                         System.out.println("No hay repuestos disponibles");
                     } else {
+                        System.out.println(repuestos[0].formatoColumna("Codigo") + "|"
+                                + repuestos[0].formatoColumna("Nombre") + "|"
+                                + repuestos[0].formatoColumna("Marca") + "|"
+                                + repuestos[0].formatoColumna("Categoria") + "|"
+                                + repuestos[0].formatoColumna("Compatibilidad") + "|"
+                                + repuestos[0].formatoColumna("Precio ($)") + "|"
+                                + repuestos[0].formatoColumna("Stock") + "|"
+                                + repuestos[0].formatoColumna("Stock Min" + "|"));
                         for (int i = 0; i < Repuesto.getCantidad(); i++) {
-                            System.out.println(repuestos[i].formatoColumna("Codigo") + "|"
-                                    + repuestos[i].formatoColumna("Nombre") + "|"
-                                    + repuestos[i].formatoColumna("Marca") + "|"
-                                    + repuestos[i].formatoColumna("Categoria") + "|"
-                                    + repuestos[i].formatoColumna("Compatibilidad") + "|"
-                                    + repuestos[i].formatoColumna("Precio ($)") + "|"
-                                    + repuestos[i].formatoColumna("Stock") + "|"
-                                    + repuestos[i].formatoColumna("Strock Min" + "|"));
                             repuestos[i].MostrarRepuestos();
                         }
                     }
@@ -590,7 +591,7 @@ public class GestionRepuestos {
                             }
                             break;
 
-                        case 6: // Editar Strock (unidades)
+                        case 6: // Editar Stock (unidades)
 
                             // --- STOCK DEL REPUESTO: Verificación de que se hayan ingresado solo números ---
                             String nuevoStockSTR = JOptionPane.showInputDialog("Ingrese la cantidad de unidades");
@@ -849,38 +850,82 @@ public class GestionRepuestos {
         // --- Metodo para buscar repuestos ---
 
         // --- Paso 1: Filtro de compatibilidad ---
-        // Petición de datos
-        String compatibilidadRepuesto_modelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
-        String compatibilidadRepuesto_anhoSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
-        String compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
-
-        // Configuración por si el cliente deja en blanco o elije cualquiera
-        if (compatibilidadRepuesto_modelo == null || compatibilidadRepuesto_modelo.equalsIgnoreCase("Cualquiera")) {
-
-        }
-
-        // Mostrar con el formato correcto
+        // --- Mostrar con el formato correcto ---
         if (Repuesto.getCantidad() == 0) {
             System.out.println("No hay repuestos disponibles");
         } else {
 
-            for (int i = 0; i < Repuesto.getCantidad(); i++) {
-                System.out.println(repuestos[i].formatoColumna("Codigo") + "|"
-                        + repuestos[i].formatoColumna("Nombre") + "|"
-                        + repuestos[i].formatoColumna("Marca") + "|"
-                        + repuestos[i].formatoColumna("Categoria") + "|"
-                        + repuestos[i].formatoColumna("Compatibilidad") + "|"
-                        + repuestos[i].formatoColumna("Precio ($)") + "|"
-                        + repuestos[i].formatoColumna("Stock") + "|"
-                        + repuestos[i].formatoColumna("Strock Min" + "|"));
+            // --- Petición de datos ---
+            String compatibilidadRepuesto_modelo = JOptionPane.showInputDialog("Ingrese el modelo del repuesto");
+            String compatibilidadRepuesto_anhoSTR = JOptionPane.showInputDialog("Ingrese el año del repuesto del repuesto (####)");
+            int compatibilidadRepuesto_anho = 0; // Variable por si el usuario usa el formato correcto para el año
 
-                if (compatibilidadRepuesto_modelo == null || compatibilidadRepuesto_modelo.equalsIgnoreCase("Cualquiera")
-                        || compatibilidadRepuesto_anhoSTR == null || compatibilidadRepuesto_anhoSTR.equalsIgnoreCase("Cualquiera")
-                        || compatibilidadRepuesto_motor == null || compatibilidadRepuesto_motor.equalsIgnoreCase("Cualquiera")) {
-                    repuestos[i].MostrarRepuestos();
+            if (!(compatibilidadRepuesto_anhoSTR.equalsIgnoreCase("Cualquiera") || compatibilidadRepuesto_anhoSTR.equalsIgnoreCase(""))) {
+                for (int i = 0; i < compatibilidadRepuesto_anhoSTR.length(); i++) {
+                    if (!(compatibilidadRepuesto_anhoSTR.charAt(i) >= '0' && compatibilidadRepuesto_anhoSTR.charAt(i) <= '9')) {
+                        JOptionPane.showMessageDialog(null, """
+                                                        Formato de fecha no compatible.
+                                                        El formato debe ser cuatro (4) números ####
+                                                        """);
+                        return;
+                    }
                 }
-
+                if (compatibilidadRepuesto_anhoSTR.length() != 4) {
+                    JOptionPane.showMessageDialog(null, """
+                                                        Formato de fecha no compatible.
+                                                        El formato debe ser cuatro (4) números ####
+                                                        """);
+                    return;
+                } else {
+                    compatibilidadRepuesto_anho = Integer.parseInt(compatibilidadRepuesto_anhoSTR);
+                }
             }
+
+            String compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
+
+            // --- Lista para almacenar objetos compatibles ---
+            Repuesto[] repuestosFiltrados = new Repuesto[Repuesto.getCantidad()];
+
+            // --- Variable de control de cantidad de repuestos filtrados ---
+            int cantidadFiltrados = 0;
+
+            // --- Configuración por si el cliente deja en blanco o elije cualquiera ---
+            for (int i = 0; i < Repuesto.getCantidad(); i++) {
+                boolean modeloFiltrado = compatibilidadRepuesto_modelo == null || compatibilidadRepuesto_modelo.equalsIgnoreCase("Cualquiera")
+                        || compatibilidadRepuesto_modelo.equalsIgnoreCase("") || compatibilidadRepuesto_modelo.equalsIgnoreCase(repuestos[i].getCompatibilidadRepuesto_modelo());
+
+                boolean anhoFiltrado = compatibilidadRepuesto_anhoSTR.equalsIgnoreCase("Cualquiera")
+                        || compatibilidadRepuesto_anhoSTR.equalsIgnoreCase("") || compatibilidadRepuesto_anho == repuestos[i].getCompatibilidadRepuesto_anho();
+
+                boolean motorFiltrado = compatibilidadRepuesto_motor == null || compatibilidadRepuesto_motor.equalsIgnoreCase("Cualquiera")
+                        || compatibilidadRepuesto_motor.equalsIgnoreCase("") || compatibilidadRepuesto_motor.equalsIgnoreCase(repuestos[i].getCompatibilidadRepuesto_motor());
+
+                if (modeloFiltrado && anhoFiltrado && motorFiltrado) {
+                    repuestosFiltrados[cantidadFiltrados] = repuestos[i];
+                    cantidadFiltrados++;
+                }
+            }
+
+            System.out.println(repuestos[0].formatoColumna("Codigo") + "|"
+                    + repuestos[0].formatoColumna("Nombre") + "|"
+                    + repuestos[0].formatoColumna("Marca") + "|"
+                    + repuestos[0].formatoColumna("Categoria") + "|"
+                    + repuestos[0].formatoColumna("Compatibilidad") + "|"
+                    + repuestos[0].formatoColumna("Precio ($)") + "|"
+                    + repuestos[0].formatoColumna("Stock") + "|"
+                    + repuestos[0].formatoColumna("Stock Min" + "|"));
+            for (int i = 0; i < cantidadFiltrados; i++) {
+                repuestosFiltrados[i].MostrarRepuestos();
+            }
+
         }
+    }
+
+    public Repuesto[] getRepuestos() {
+        return repuestos;
+    }
+
+    public void setRepuestos(Repuesto[] repuestos) {
+        this.repuestos = repuestos;
     }
 }

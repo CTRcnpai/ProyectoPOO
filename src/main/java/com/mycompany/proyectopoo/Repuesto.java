@@ -72,6 +72,8 @@ public class Repuesto {
         return datoFormato;
 
     }
+    
+    // --- Método para generar códigos ---
 
     public String generarCodigo() {
         // === Asignación de código ===
