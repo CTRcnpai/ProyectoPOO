@@ -3,7 +3,6 @@ package com.mycompany.proyectopoo;
 
 /**
  *
- * @author fviet
  */
 import javax.swing.JOptionPane;
 public class Pedido {

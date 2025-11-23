@@ -6,9 +6,7 @@ import javax.swing.JOptionPane;
  *
  * @authors
  * Cristopher Cardoza Valdes
- * Felipe Mendez Vieto
  * Braulio Saravia Latinez
- * Maite Diaz Ramirez
  * 
  */
 public class Menu {
