@@ -69,13 +69,21 @@ public class GestionRepuestos {
                     menuLoop = false;
                     break;
                 // OptGestion invalida
+                case "-1":
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
+                    menuLoop = false;
+                    break;
+                case null:
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
+                    menuLoop = false;
+                    break;
                 default:
                     JOptionPane.showMessageDialog(null, "Opción no valida");
             }
         }
     }
 
-    public void agregarRepuesto() {
+    private void agregarRepuesto() {
         // --- Método para agregar repuestos ---
 
         // === Variables de metodo ===
@@ -151,26 +159,36 @@ public class GestionRepuestos {
 
             // 1. FILTROS
             case "1":
-                categoria = categoria.Filtros;
+                categoria = Categoria.Filtros;
                 break;
             // 2. FRENOS
             case "2":
-                categoria = categoria.Frenos;
+                categoria = Categoria.Frenos;
                 break;
             // 3. SUSPENSIÓN
             case "3":
-                categoria = categoria.Suspension;
+                categoria = Categoria.Suspension;
                 break;
             // 4. ELÉCTRICO
             case "4":
-                categoria = categoria.Electrico;
+                categoria = Categoria.Electrico;
                 break;
             // 5. LUBRICANTES
             case "5":
-                categoria = categoria.Lubricantes;
+                categoria = Categoria.Lubricantes;
                 break;
-            // 
+
+            // Opciones invalidas
+            case "-1":
+                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                error_categoria = true;
+                break;
+            case null:
+                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                error_categoria = true;
+                break;
             default:
+                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
                 error_categoria = true;
         }
 
@@ -300,29 +318,41 @@ public class GestionRepuestos {
 
                             // 1. FILTROS
                             case "1":
-                                categoria = categoria.Filtros;
+                                categoria = Categoria.Filtros;
                                 error_categoria = false;
                                 break;
                             // 2. FRENOS
                             case "2":
-                                categoria = categoria.Frenos;
+                                categoria = Categoria.Frenos;
                                 error_categoria = false;
                                 break;
                             // 3. SUSPENSIÓN
                             case "3":
-                                categoria = categoria.Suspension;
+                                categoria = Categoria.Suspension;
                                 error_categoria = false;
                                 break;
                             // 4. ELÉCTRICO
                             case "4":
-                                categoria = categoria.Electrico;
+                                categoria = Categoria.Electrico;
                                 error_categoria = false;
                                 break;
                             // 5. LUBRICANTES
                             case "5":
-                                categoria = categoria.Lubricantes;
+                                categoria = Categoria.Lubricantes;
                                 error_categoria = false;
                                 break;
+                            // Opciones invalidas
+                            case "-1":
+                                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                error_categoria = true;
+                                break;
+                            case null:
+                                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                error_categoria = true;
+                                break;
+                            default:
+                                JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                error_categoria = true;
                         }
                     }
 
@@ -422,13 +452,16 @@ public class GestionRepuestos {
             case 1: // No desea guardar el repuesto
                 JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreRepuesto + "\nVolviendo al menú de gestión de repuestos.");
                 break;
+            case -1:
+                JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreRepuesto + "\nVolviendo al menú de gestión de repuestos.");
+                break;
             default: // Opción de control
                 JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreRepuesto + "\nVolviendo al menú de gestión de repuestos.");
                 break;
         }
     }
 
-    public void editarRepuesto(Repuesto[] repuestos) {
+    private void editarRepuesto(Repuesto[] repuestos) {
         // --- Metodo para editar objetos ---
         if (Repuesto.getCantidad() == 0) {
             JOptionPane.showMessageDialog(null, """
@@ -562,8 +595,17 @@ public class GestionRepuestos {
                                     JOptionPane.showMessageDialog(null, "La categoría fue actualizada con éxito a " + repuestos[i].getCategoria());
                                     opt = 8;
                                     break;
-                                // 
+                                // Opciones invalidas
+                                case "-1":
+                                    JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                    error_categoria = true;
+                                    break;
+                                case null:
+                                    JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                    error_categoria = true;
+                                    break;
                                 default:
+                                    JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
                                     error_categoria = true;
                             }
                             break;
@@ -755,8 +797,17 @@ public class GestionRepuestos {
                                         case "5":
                                             repuestos[i].setCategoria(Categoria.Lubricantes);
                                             break;
-                                        // 
+                                        // Opciones invalidas
+                                        case "-1":
+                                            JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                            error_categoria = true;
+                                            break;
+                                        case null:
+                                            JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
+                                            error_categoria = true;
+                                            break;
                                         default:
+                                            JOptionPane.showMessageDialog(null, "No se eligió una categoría valida");
                                             error_categoria = true;
                                     }
                                 }
@@ -846,7 +897,7 @@ public class GestionRepuestos {
 
     }
 
-    public void buscarRepuesto(Repuesto[] repuestos) {
+    private void buscarRepuesto(Repuesto[] repuestos) {
         // --- Metodo para buscar repuestos ---
 
         // --- Paso 1: Filtro de compatibilidad ---
@@ -883,6 +934,51 @@ public class GestionRepuestos {
 
             String compatibilidadRepuesto_motor = JOptionPane.showInputDialog("Ingrese el motor del repuesto");
 
+            // Categoria 
+            Categoria categoriaFiltro = null;
+            String optCategoria[] = {"Filtros", "Frenos", "Suspension", "Electrico", "Lubricantes"};
+            int optCatFiltrada = JOptionPane.showOptionDialog(
+                    null,
+                    "Elija una categoría",
+                    "FILTRO DE CATEGORÍA",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    optCategoria,
+                    "Filtros");
+
+            switch (optCatFiltrada) {
+
+                // 1. FILTROS
+                case 0:
+                    categoriaFiltro = Categoria.Filtros;
+                    break;
+                // 2. FRENOS
+                case 1:
+                    categoriaFiltro = Categoria.Frenos;
+                    break;
+                // 3. SUSPENSIÓN
+                case 2:
+                    categoriaFiltro = Categoria.Suspension;
+                    break;
+                // 4. ELÉCTRICO
+                case 3:
+                    categoriaFiltro = Categoria.Electrico;
+                    break;
+                // 5. LUBRICANTES
+                case 4:
+                    categoriaFiltro = Categoria.Lubricantes;
+                    break;
+
+                // Opcion invalida
+                default:
+                    JOptionPane.showMessageDialog(null, """
+                                                        No se eligió una categoría valida
+                                                        Regresando al menú de Gestión de repuestos
+                                                        """);
+                    return;
+            }
+
             // --- Lista para almacenar objetos compatibles ---
             Repuesto[] repuestosFiltrados = new Repuesto[Repuesto.getCantidad()];
 
@@ -900,12 +996,21 @@ public class GestionRepuestos {
                 boolean motorFiltrado = compatibilidadRepuesto_motor == null || compatibilidadRepuesto_motor.equalsIgnoreCase("Cualquiera")
                         || compatibilidadRepuesto_motor.equalsIgnoreCase("") || compatibilidadRepuesto_motor.equalsIgnoreCase(repuestos[i].getCompatibilidadRepuesto_motor());
 
-                if (modeloFiltrado && anhoFiltrado && motorFiltrado) {
+                boolean categoriaFiltrada = repuestos[i].getCategoria() == categoriaFiltro;
+
+                if (modeloFiltrado && anhoFiltrado && motorFiltrado && categoriaFiltrada) {
                     repuestosFiltrados[cantidadFiltrados] = repuestos[i];
                     cantidadFiltrados++;
                 }
             }
 
+            // --- Impresion de los repuestos filtrados ---
+            if (cantidadFiltrados == 0) {
+                JOptionPane.showMessageDialog(null, """
+                                                    "No se encontraron repuestos que coincidan con los filtros mencionados
+                                                    Regresando al menú de Gestión de repuestos
+                                                     """);
+            }
             System.out.println(repuestos[0].formatoColumna("Codigo") + "|"
                     + repuestos[0].formatoColumna("Nombre") + "|"
                     + repuestos[0].formatoColumna("Marca") + "|"
@@ -921,6 +1026,7 @@ public class GestionRepuestos {
         }
     }
 
+    // === Getters y Setters de la lista ===
     public Repuesto[] getRepuestos() {
         return repuestos;
     }
