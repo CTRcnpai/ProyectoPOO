@@ -34,14 +34,14 @@ public class GestionRepuestos {
                     if (Repuesto.getCantidad() == 0) {
                         System.out.println("No hay repuestos disponibles");
                     } else {
-                        System.out.println(repuestos[0].formatoColumna("Codigo") + "|"
-                                + repuestos[0].formatoColumna("Nombre") + "|"
-                                + repuestos[0].formatoColumna("Marca") + "|"
-                                + repuestos[0].formatoColumna("Categoria") + "|"
-                                + repuestos[0].formatoColumna("Compatibilidad") + "|"
-                                + repuestos[0].formatoColumna("Precio ($)") + "|"
-                                + repuestos[0].formatoColumna("Stock") + "|"
-                                + repuestos[0].formatoColumna("Stock Min" + "|"));
+                        System.out.println(Repuesto.formatoColumna("Codigo") + "|"
+                                + Repuesto.formatoColumna("Nombre") + "|"
+                                + Repuesto.formatoColumna("Marca") + "|"
+                                + Repuesto.formatoColumna("Categoria") + "|"
+                                + Repuesto.formatoColumna("Compatibilidad") + "|"
+                                + Repuesto.formatoColumna("Precio ($)") + "|"
+                                + Repuesto.formatoColumna("Stock") + "|"
+                                + Repuesto.formatoColumna("Stock Min" + "|"));
                         for (int i = 0; i < Repuesto.getCantidad(); i++) {
                             repuestos[i].MostrarRepuestos();
                         }
@@ -61,7 +61,7 @@ public class GestionRepuestos {
                     break;
                 // 5. Reponer stock
                 case "5":
-                    JOptionPane.showMessageDialog(null, "Opción no disponible aún");
+                    reponerStock(repuestos);
                     break;
                 // 6. Regresar
                 case "6":
@@ -83,6 +83,7 @@ public class GestionRepuestos {
         }
     }
 
+    // Métodos
     private void agregarRepuesto() {
         // --- Método para agregar repuestos ---
 
@@ -666,6 +667,7 @@ public class GestionRepuestos {
                                 JOptionPane.showMessageDialog(null, "El stock fue actualizado con éxito a " + repuestos[i].getStockMinimoRepuesto());
                                 opt = 8;
                             }
+                            break;
                         case 8:
                             JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
                             break;
@@ -755,7 +757,7 @@ public class GestionRepuestos {
                                         JOptionPane.showMessageDialog(null, "Compatibilidad actualizada con éxito a " + repuestos[i].getCompatibilidadRepuesto_modelo()
                                                 + "/" + repuestos[i].getCompatibilidadRepuesto_anho()
                                                 + "/" + repuestos[i].getCompatibilidadRepuesto_motor());
-                                        opt = 8;
+                                        return;
                                     }
                                     break;
                                 }
@@ -1005,25 +1007,175 @@ public class GestionRepuestos {
             }
 
             // --- Impresion de los repuestos filtrados ---
+            
             if (cantidadFiltrados == 0) {
                 JOptionPane.showMessageDialog(null, """
                                                     "No se encontraron repuestos que coincidan con los filtros mencionados
                                                     Regresando al menú de Gestión de repuestos
                                                      """);
+                return;
             }
-            System.out.println(repuestos[0].formatoColumna("Codigo") + "|"
-                    + repuestos[0].formatoColumna("Nombre") + "|"
-                    + repuestos[0].formatoColumna("Marca") + "|"
-                    + repuestos[0].formatoColumna("Categoria") + "|"
-                    + repuestos[0].formatoColumna("Compatibilidad") + "|"
-                    + repuestos[0].formatoColumna("Precio ($)") + "|"
-                    + repuestos[0].formatoColumna("Stock") + "|"
-                    + repuestos[0].formatoColumna("Stock Min" + "|"));
+            System.out.println(Repuesto.formatoColumna("Codigo") + "|"
+                    + Repuesto.formatoColumna("Nombre") + "|"
+                    + Repuesto.formatoColumna("Marca") + "|"
+                    + Repuesto.formatoColumna("Categoria") + "|"
+                    + Repuesto.formatoColumna("Compatibilidad") + "|"
+                    + Repuesto.formatoColumna("Precio ($)") + "|"
+                    + Repuesto.formatoColumna("Stock") + "|"
+                    + Repuesto.formatoColumna("Stock Min" + "|"));
             for (int i = 0; i < cantidadFiltrados; i++) {
                 repuestosFiltrados[i].MostrarRepuestos();
             }
 
         }
+    }
+
+    private void reponerStock(Repuesto[] repuestos) {
+
+        int optReponer;
+        do {
+
+            optReponer = Integer.parseInt(JOptionPane.showInputDialog("""
+                                                                    ¿Cómo desea reabastecer el stock?
+                                                                    1. Búsqueda individual
+                                                                    2. Todos los repuestos
+                                                                    3. Regresar
+                                                                    """));
+
+            switch (optReponer) {
+                case 1:
+
+                    if (Repuesto.getCantidad() == 0) {
+                        JOptionPane.showMessageDialog(null, "No se encontró ningún repuesto con el código ingresado. \n"
+                                + "Volviendo al menú de Reponer Stock");
+                        break;
+                    }
+                    String codigoBuscar = JOptionPane.showInputDialog("Ingrese el código del repuesto");
+
+                    for (int i = 0; i < Repuesto.getCantidad(); i++) {
+
+                        if (repuestos[i].getCodigo().equalsIgnoreCase(codigoBuscar)) {
+
+                            String cantidadReponerSTR = JOptionPane.showInputDialog(
+                                    "Ingrese la cantidad de stock a reponer de " + repuestos[i].getNombreRepuesto()
+                                    + "\nSolamente números enteros mayores a cero (0)");
+
+                            int cantidadReponer = 0;
+
+                            for (int j = 0; j < cantidadReponerSTR.length(); j++) {
+                                if (!(cantidadReponerSTR.charAt(j) >= '0' && cantidadReponerSTR.charAt(j) <= '9')) {
+                                    JOptionPane.showMessageDialog(null, "Solamente se aceptan números enteros mayores a cero (0)\n"
+                                            + "Volviendo al menú de Reponer Stock");
+                                    return;
+                                }
+                            }
+
+                            cantidadReponer = Integer.parseInt(cantidadReponerSTR);
+
+                            if (cantidadReponer >= 1) {
+                                JOptionPane.showMessageDialog(null, "El stock del repuesto " + repuestos[i].getNombreRepuesto() + " ha sido actualizado"
+                                        + "Cantidad anterior: " + repuestos[i].getStockRepuesto()
+                                        + "Nueva cantidad: " + cantidadReponer);
+                                repuestos[i].setStockRepuesto(cantidadReponer);
+                                return;
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Solamente se aceptan números enteros mayores a cero (0)\n"
+                                        + "Volviendo al menú de Reponer Stock");
+                                break;
+                            }
+
+                        }
+                    }
+                case 2:
+
+                    String matrizStock[][] = new String[Repuesto.getCantidad()][3];
+
+                    // 
+                    for (int i = 0; i < Repuesto.getCantidad(); i++) {
+                        String cantidadReponerSTR = JOptionPane.showInputDialog("Ingrese la cantidad de stock a reponer de " + repuestos[i].getNombreRepuesto()
+                                + "\nCódigo: " + repuestos[i].getCodigo()
+                                + "\nStock actual: " + repuestos[i].getStockRepuesto());
+
+                        if (cantidadReponerSTR == null && i == 0) {
+                            JOptionPane.showMessageDialog(null, "No se realizaron actualizaciones de stock.");
+                            return;
+                        }
+
+                        if (cantidadReponerSTR == null) {
+                            JOptionPane.showMessageDialog(null, "Se ha cancelado el proceso"
+                                    + "\nMostrando en consola los cambios y regresando al menú de Gestión");
+
+                            // Imprimir la matriz
+                            System.out.println(
+                                    Repuesto.formatoColumna("Nombre") + "|"
+                                    + Repuesto.formatoColumna("Stock Viejo") + "|"
+                                    + Repuesto.formatoColumna("Stock Nuevo")
+                            );
+
+                            for (int k = 0; k < matrizStock.length; k++) {
+                                if (matrizStock[k][0] != null) {
+                                    System.out.println(
+                                            Repuesto.formatoColumna(matrizStock[k][0]) + "|"
+                                            + Repuesto.formatoColumna(matrizStock[k][1]) + "|"
+                                            + Repuesto.formatoColumna(matrizStock[k][2])
+                                    );
+                                }
+                            }
+                            return;
+                        }
+
+                        for (int j = 0; j < cantidadReponerSTR.length(); j++) {
+                            if (!(cantidadReponerSTR.charAt(j) >= '0' && cantidadReponerSTR.charAt(j) <= '9')) {
+                                JOptionPane.showMessageDialog(null, "Solamente se aceptan números"
+                                        + "\nMostrando en consola los cambios y regresando al menú de Gestión");
+
+                                // Imprimir la matriz
+                                System.out.println(
+                                        Repuesto.formatoColumna("Nombre") + "|"
+                                        + Repuesto.formatoColumna("Stock Viejo") + "|"
+                                        + Repuesto.formatoColumna("Stock Nuevo")
+                                );
+
+                                for (int k = 0; k < matrizStock.length; k++) {
+                                    if (matrizStock[k][0] != null) {
+                                        System.out.println(
+                                                Repuesto.formatoColumna(matrizStock[k][0]) + "|"
+                                                + Repuesto.formatoColumna(matrizStock[k][1]) + "|"
+                                                + Repuesto.formatoColumna(matrizStock[k][2])
+                                        );
+                                    }
+                                }
+                                return;
+                            }
+                        }
+
+                        int cantidadReponer = Integer.parseInt(cantidadReponerSTR);
+                        String stockViejo = repuestos[i].getStockRepuesto() + "";
+                        String stockNuevo = (repuestos[i].getStockRepuesto() + cantidadReponer) + "";
+
+                        matrizStock[i][0] = repuestos[i].getNombreRepuesto();
+                        matrizStock[i][1] = stockViejo;
+                        matrizStock[i][2] = stockNuevo;
+                    }
+
+                    // Imprimir la matriz
+                    System.out.println(
+                            Repuesto.formatoColumna("Nombre") + "|"
+                            + Repuesto.formatoColumna("Stock Viejo") + "|"
+                            + Repuesto.formatoColumna("Stock Nuevo")
+                    );
+
+                    for (int i = 0; i < matrizStock.length; i++) {
+                        if (matrizStock[i][0] != null) {
+                            System.out.println(
+                                    Repuesto.formatoColumna(matrizStock[i][0]) + "|"
+                                    + Repuesto.formatoColumna(matrizStock[i][1]) + "|"
+                                    + Repuesto.formatoColumna(matrizStock[i][2])
+                            );
+                        }
+                    }
+            }
+        } while (optReponer != 3);
     }
 
     // === Getters y Setters de la lista ===

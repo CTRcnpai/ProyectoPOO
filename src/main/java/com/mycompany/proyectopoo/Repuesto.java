@@ -61,7 +61,7 @@ public class Repuesto {
     }
     // --- Método para mostrar todos los repuestos ---
 
-    public String formatoColumna(String dato) {
+    public static String formatoColumna(String dato) {
         int numero = 20 - dato.length();
         String datoFormato = dato;
 
