@@ -32,9 +32,16 @@ public class GestionPedidos {
                     seguir = false;
                     break;
 
-                default:
-                    JOptionPane.showMessageDialog(null, "opcion invalida.");
+                case "-1":
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
+                    seguir = false;
                     break;
+                case null:
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
+                    seguir = false;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no valida");
             }
         }
     }

@@ -10,10 +10,36 @@ import javax.swing.JOptionPane;
 public class GestionRepuestos {
 
     // Listas de repuestos
-    private Repuesto repuestos[] = new Repuesto[999];
+    private Repuesto repuestos[] = new Repuesto[200];
+
+    // 20 Repuestos precargados
+    public void repuestosPrecargados() {
+        repuestos[0] = new Repuesto("R001", "Focos", "Mazda", "Miata", "1.8L", Categoria.Electrico, 1989, 200.00, 10, 3);
+        repuestos[1] = new Repuesto("R002", "Filtro aceite", "Toyota", "Corolla", "2.0L", Categoria.Filtros, 2020, 25.00, 50, 10);
+        repuestos[2] = new Repuesto("R003", "Pastilla freno", "Honda", "Civic", "1.5L", Categoria.Frenos, 2018, 35.50, 40, 8);
+        repuestos[3] = new Repuesto("R004", "Amortiguador", "Ford", "Focus", "2.0L", Categoria.Suspension, 2019, 120.00, 15, 5);
+        repuestos[4] = new Repuesto("R005", "Bujia", "Chevrolet", "Cruze", "1.4L", Categoria.Electrico, 2021, 12.00, 100, 20);
+        repuestos[5] = new Repuesto("R006", "Aceite", "Castrol", "Universal", "N/A", Categoria.Lubricantes, 2024, 50.00, 60, 10);
+        repuestos[6] = new Repuesto("R007", "Filtro aire", "BMW", "X3", "2.0L", Categoria.Filtros, 2022, 40.00, 30, 5);
+        repuestos[7] = new Repuesto("R008", "Disco freno", "Audi", "A4", "2.0T", Categoria.Frenos, 2020, 80.00, 20, 5);
+        repuestos[8] = new Repuesto("R009", "Amortiguador", "Volkswagen", "Golf", "1.6L", Categoria.Suspension, 2017, 110.00, 12, 3);
+        repuestos[9] = new Repuesto("R010", "Bateria", "Nissan", "Sentra", "1.8L", Categoria.Electrico, 2023, 150.00, 25, 5);
+        repuestos[10] = new Repuesto("R011", "Aceite", "Mobil", "Universal", "N/A", Categoria.Lubricantes, 2024, 45.00, 70, 15);
+        repuestos[11] = new Repuesto("R012", "Filtro combustible", "Kia", "Rio", "1.6L", Categoria.Filtros, 2019, 30.00, 35, 8);
+        repuestos[12] = new Repuesto("R013", "Frenos", "Hyundai", "Elantra", "2.0L", Categoria.Frenos, 2021, 38.00, 40, 10);
+        repuestos[13] = new Repuesto("R014", "Amortiguador", "Suzuki", "Swift", "1.2L", Categoria.Suspension, 2018, 100.00, 18, 5);
+        repuestos[14] = new Repuesto("R015", "Luces LED", "Volkswagen", "Tiguan", "2.0L", Categoria.Electrico, 2022, 220.00, 8, 2);
+        repuestos[15] = new Repuesto("R016", "Aceite", "Total", "Universal", "N/A", Categoria.Lubricantes, 2024, 55.00, 65, 10);
+        repuestos[16] = new Repuesto("R017", "Filtro cabina", "Ford", "Explorer", "3.0L", Categoria.Filtros, 2021, 28.00, 30, 5);
+        repuestos[17] = new Repuesto("R018", "Disco freno", "Toyota", "Camry", "2.5L", Categoria.Frenos, 2020, 90.00, 22, 6);
+        repuestos[18] = new Repuesto("R019", "Amortiguador", "Honda", "Accord", "2.0L", Categoria.Suspension, 2019, 115.00, 14, 4);
+        repuestos[19] = new Repuesto("R020", "Bujia encendido", "Mazda", "CX5", "2.5L", Categoria.Electrico, 2023, 15.00, 90, 20);
+
+    }
 
     // Submenú de Gestión de Repuestos y bucle del menu
     public void menuGestionRepuesto() {
+        repuestosPrecargados();
 
         boolean menuLoop = true;
 
@@ -1007,7 +1033,6 @@ public class GestionRepuestos {
             }
 
             // --- Impresion de los repuestos filtrados ---
-            
             if (cantidadFiltrados == 0) {
                 JOptionPane.showMessageDialog(null, """
                                                     "No se encontraron repuestos que coincidan con los filtros mencionados

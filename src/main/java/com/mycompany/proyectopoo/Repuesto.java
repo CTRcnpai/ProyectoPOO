@@ -1,7 +1,5 @@
 package com.mycompany.proyectopoo;
 
-import javax.swing.JOptionPane;
-
 /**
  *
  * @author Cristopher Cardoza
