@@ -12,15 +12,15 @@ public class GestionNegocios {
     private Negocio negocios[] = new Negocio[40];
 
     // 6 Negociosprecargados
-    public void repuestosPrecargados() {
-        negocios[0] = new Negocio();
-        negocios[1] = new Negocio();
-        negocios[2] = new Negocio();
-        negocios[3] = new Negocio();
-        negocios[4] = new Negocio();
-        negocios[5] = new Negocio();
-
-    }
+//    public void repuestosPrecargados() {
+//        negocios[0] = new Negocio();
+//        negocios[1] = new Negocio();
+//        negocios[2] = new Negocio();
+//        negocios[3] = new Negocio();
+//        negocios[4] = new Negocio();
+//        negocios[5] = new Negocio();
+//
+//    }
 
     // Submenú de Gestión de Negocios y bucle del menu
     public void menuGestionNegocios() {

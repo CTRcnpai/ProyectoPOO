@@ -34,7 +34,7 @@ public class Pedido {
                 break;
         }
 
-        negocio = new Negocio();
+//        negocio = new Negocio();
         negocio.setNombreNegocio(JOptionPane.showInputDialog("Ingrese el nombre del negocio asociado:"));
 
         detalle = new DetallePedido();
