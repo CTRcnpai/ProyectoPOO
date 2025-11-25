@@ -4,7 +4,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @authors Cristopher Cardoza Valdes Braulio Saravia Latinez
+ * @authors Cristopher Cardoza Valdes
  *
  */
 public class Menu {
