@@ -698,6 +698,8 @@ public class GestionRepuestos {
                             JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
                             break;
 
+                        // OptGestion invalida
+
                         default:
                             JOptionPane.showMessageDialog(null, "Opción no valida, intente de nuevo");
                             opt = Integer.parseInt(JOptionPane.showInputDialog(

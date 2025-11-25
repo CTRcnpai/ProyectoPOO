@@ -28,7 +28,7 @@ public class Negocio {
     // === Constructor ===
     public Negocio(String codigoNegocio, String nombreNegocio, String correoNegocio, String contactoNegocio,
             String telefonoNegocio, String direccionNegocio,
-            TipoNegocio tipoNegocio, double limiteCreditoNegocio) {
+            TipoNegocio tipoNegocio, double saldoNegocio, double limiteCreditoNegocio) {
         this.codigoNegocio = codigoNegocio;
         this.nombreNegocio = nombreNegocio;
         this.correoNegocio = correoNegocio;
@@ -37,6 +37,7 @@ public class Negocio {
         this.direccionNegocio = direccionNegocio;
         this.tipoNegocio = tipoNegocio;
         this.limiteCreditoNegocio = limiteCreditoNegocio;
+        this.saldoNegocio = saldoNegocio;
     }
 
     // === Definición de Métodos ===

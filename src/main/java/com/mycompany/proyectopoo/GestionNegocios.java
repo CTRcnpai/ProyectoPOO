@@ -44,12 +44,11 @@ public class GestionNegocios {
                     } else {
                         System.out.println(Repuesto.formatoColumna("Codigo") + "|"
                                 + Negocio.formatoColumna("Nombre") + "|"
-                                + Negocio.formatoColumna("Marca") + "|"
-                                + Negocio.formatoColumna("Categoria") + "|"
-                                + Negocio.formatoColumna("Compatibilidad") + "|"
-                                + Negocio.formatoColumna("Precio ($)") + "|"
-                                + Negocio.formatoColumna("Stock") + "|"
-                                + Negocio.formatoColumna("Stock Min" + "|"));
+                                + Negocio.formatoColumna("Tipo") + "|"
+                                + Negocio.formatoColumna("Contacto") + "|"
+                                + Negocio.formatoColumna("Teléfono") + "|"
+                                + Negocio.formatoColumna("Correo") + "|"
+                                + Negocio.formatoColumna("Dirección" + "|"));
                         for (int i = 0; i < Negocio.getCantidad(); i++) {
                             negocios[i].MostrarNegocios();
                         }
@@ -216,12 +215,30 @@ public class GestionNegocios {
             // --- Bucle while para permitir al usuario elegir si desea hacer correciones o no las veces que sea necesario ---
             while (optFormato != 2) {
 
-                optFormato = Integer.parseInt(JOptionPane.showInputDialog("""
-                                                                          El formato de la información no es el correcto.
-                                                                          ¿Desea agregar el dato de nuevo?
-                                                                          1. Sí
-                                                                          2. No
-                                                                          """));
+                String mensajeError = "La información posee un formato incorrecto en: \n";
+
+                if (error_TipoNegocio) {
+                    mensajeError += "- El tipo de negocio.\n";
+                }
+                if (error_telefonoNegocio) {
+                    mensajeError += "- El formato del teléfono\n";
+                }
+                if (error_correoNegocio) {
+                    mensajeError += "- El formato del correo\n";
+                }
+
+                String opcionesReintento[] = {"Reintentar", "Cancelar"};
+
+                optFormato = JOptionPane.showOptionDialog(
+                        null,
+                        mensajeError
+                        + "\n¿Desea agregar la información de nuevo?",
+                        "CONFIRMACIÓN",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcionesReintento,
+                        "No");
 
                 if (optFormato == 1) {
 
@@ -312,7 +329,7 @@ public class GestionNegocios {
 
                 } else if (optFormato == 2) {
                     // --- USUARIO DESEA CANCELAR ---
-
+                    JOptionPane.showMessageDialog(null, "Se canceló el proceso");
                     // === Reseteo de Atributos ===
                     // --- Texto ---
                     codigoNegocio = null;
@@ -330,8 +347,144 @@ public class GestionNegocios {
                     saldoNegocio = 0.0;
 
                     optFormato = 2;
+                    return;
                 } else {
                     JOptionPane.showMessageDialog(null, "Opción invalida. \nIntente de nuevo.");
+                }
+            }
+        }
+
+        String opcionesConfirmacion[] = {"Sí", "No"};
+
+        int valorBotonConfirmacion = JOptionPane.showOptionDialog(
+                null,
+                "¿Desea agregar el negocio " + nombreNegocio + "?"
+                + "\n Tipo: " + tipoNegocio
+                + "\n Límite de crédito: " + limiteCreditoNegocio
+                + "\n Correo: " + correoNegocio
+                + "\n Contacto: " + contactoNegocio
+                + "\n Dirección: " + direccionNegocio,
+                "CONFIRMACIÓN",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opcionesConfirmacion,
+                "No");
+
+        switch (valorBotonConfirmacion) {
+            case 0: // Si desea guardar el repuesto
+                Negocio nuevoNegocio = new Negocio(codigoNegocio, nombreNegocio, correoNegocio, contactoNegocio,
+                        telefonoNegocio, direccionNegocio, tipoNegocio, saldoNegocio, limiteCreditoNegocio);
+                negocios[Negocio.getCantidad() - 1] = nuevoNegocio;
+                break;
+            case 1: // No desea guardar el repuesto
+                JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreNegocio + "\nVolviendo al menú de gestión de repuestos.");
+                break;
+            case -1:
+                JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreNegocio + "\nVolviendo al menú de gestión de repuestos.");
+                break;
+            default: // Opción de control
+                JOptionPane.showMessageDialog(null, "No se agregó el repuesto " + nombreNegocio + "\nVolviendo al menú de gestión de repuestos.");
+                break;
+        }
+    }
+
+    public void editarNegocio(Negocio[] negocios) {
+
+        if (Negocio.getCantidad() == 0) {
+            JOptionPane.showMessageDialog(null, """
+                                                Por el momento no hay negocios. 
+                                                Por favor agregue un negocio para usar esta característica.
+                                                Volviendo al menú de Gestión de Negocios.
+                                                """);
+            return;
+        }
+
+        String codigoBuscar = JOptionPane.showInputDialog("""
+                                                          Ingrese el código del repuesto a editar
+                                                          Formato: R###
+                                                          """);
+
+        for (int i = 0; i < Negocio.getCantidad(); i++) {
+            if (negocios[i].getCodigoNegocio().equalsIgnoreCase(codigoBuscar)) {
+
+                int opt = Integer.parseInt(JOptionPane.showInputDialog(
+                        "=== Menu de actualización ==="
+                        + "\n1. Nombre (Actual: " + negocios[i].getNombreNegocio() + ")"
+                        + "\n2. Tipo de negocio (Actual: " + negocios[i].getTipoNegocio() + ")"
+                        + "\n3. Contacto (Actual: " + negocios[i].getContactoNegocio() + ")"
+                        + "\n4. Teléfono (Actual: " + negocios[i].getTelefonoNegocio() + ")"
+                        + "\n5. Correo (Actual: " + negocios[i].getCorreoNegocio() + ")"
+                        + "\n6. Dirección (Actual: " + negocios[i].getDireccionNegocio() + ")"
+                        + "\n7. Límite de crédito ($) (Actual: " + negocios[i].getLimiteCreditoNegocio() + ")"
+                        + "\n8. Regresar"
+                ));
+
+                switch (opt) {
+                    case 1: // Nuevo nombre
+                        String nuevoNombre = JOptionPane.showInputDialog("Ingrese el nombre del producto");
+                        negocios[i].setNombreNegocio(nuevoNombre);
+                        JOptionPane.showMessageDialog(null, "Nombre actualizado con éxito a " + negocios[i].getNombreNegocio());
+                        opt = 8;
+                        break;
+                    case 2: // Nuevo tipo
+
+                        TipoNegocio tipoNegocio = null;
+                        String optBotones[] = {"Gasolinera", "Taller", "Venta de repuestos", "Alquiler de vehículos"};
+                        int optCatFiltrada = JOptionPane.showOptionDialog(
+                                null,
+                                "Elija el tipo de negocio",
+                                "FILTRO DE NEGOCIO",
+                                JOptionPane.DEFAULT_OPTION,
+                                JOptionPane.QUESTION_MESSAGE,
+                                null,
+                                optBotones,
+                                "Gasolinera");
+
+                        switch (optCatFiltrada) {
+                            case 0:
+                                tipoNegocio = TipoNegocio.Gasolinera;
+                                break;
+                            case 1:
+                                tipoNegocio = TipoNegocio.Taller;
+                                break;
+                            case 2:
+                                tipoNegocio = TipoNegocio.Venta_Repuestos;
+                                break;
+                            case 3:
+                                tipoNegocio = TipoNegocio.Alquiler_Vehiculos;
+                                break;
+                            // OptGestion invalida
+                            default:
+                                JOptionPane.showMessageDialog(null, "Opción no valida\nElegido por defecto (Gasolinera)");
+                        }
+
+                        break;
+
+                    case 3: // Contacto
+                        String nuevoContacto = JOptionPane.showInputDialog("Ingrese el nombre del producto");
+                        negocios[i].setContactoNegocio(nuevoContacto);
+                        JOptionPane.showMessageDialog(null, "Nombre del contacto ha sido actualizado con éxito a " + negocios[i].getContactoNegocio());
+                        opt = 8;
+                        break;
+                    case 8:
+                        JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
+                        break;
+
+                    default:
+                        JOptionPane.showMessageDialog(null, "Opción no valida, intente de nuevo");
+                        opt = Integer.parseInt(JOptionPane.showInputDialog(
+                                "=== Menu de actualización ==="
+                                + "\n1. Nombre (Actual: " + negocios[i].getNombreNegocio() + ")"
+                                + "\n2. Tipo de negocio (Actual: " + negocios[i].getTipoNegocio() + ")"
+                                + "\n3. Contacto (Actual: " + negocios[i].getContactoNegocio() + ")"
+                                + "\n4. Teléfono (Actual: " + negocios[i].getTelefonoNegocio() + ")"
+                                + "\n5. Correo (Actual: " + negocios[i].getCorreoNegocio() + ")"
+                                + "\n6. Dirección (Actual: " + negocios[i].getDireccionNegocio() + ")"
+                                + "\n7. Límite de crédito ($) (Actual: " + negocios[i].getLimiteCreditoNegocio() + ")"
+                                + "\n8. Regresar"
+                        ));
+
                 }
             }
         }

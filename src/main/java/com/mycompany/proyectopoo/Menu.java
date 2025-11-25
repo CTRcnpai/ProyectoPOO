@@ -4,10 +4,8 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @authors
- * Cristopher Cardoza Valdes
- * Braulio Saravia Latinez
- * 
+ * @authors Cristopher Cardoza Valdes Braulio Saravia Latinez
+ *
  */
 public class Menu {
 
@@ -47,10 +45,17 @@ public class Menu {
                     loopMenuPrincipal = false;
                     break;
 
-                // Opción invalida
-                default:
-                    JOptionPane.showMessageDialog(null, "Opción invalida, intente de nuevo");
+                // OptGestion invalida
+                case "-1":
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú");
+                    loopMenuPrincipal = false;
                     break;
+                case null:
+                    JOptionPane.showMessageDialog(null, "Volviendo al menú");
+                    loopMenuPrincipal = false;
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Opción no valida");
             }
         }
     }
