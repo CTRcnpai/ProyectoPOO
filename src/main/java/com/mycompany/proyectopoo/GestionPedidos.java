@@ -4,7 +4,8 @@ import javax.swing.JOptionPane;
 
 public class GestionPedidos {
 
-    Pedido pedido1 = new Pedido();
+    // Listas de pedidos
+    private Pedido pedidos[] = new Pedido[100];
 
     public void menuGestionPedidos() {
         boolean seguir = true;
@@ -20,7 +21,7 @@ public class GestionPedidos {
                     break;
 
                 case "2":
-                    if (pedido1.idPedido == null) {
+                    if (pedido1.getIdPedido() == null) {
                         JOptionPane.showMessageDialog(null, "no hay pedidos registrados.");
                     } else {
                         pedido1.mostrarPedido();
@@ -45,4 +46,18 @@ public class GestionPedidos {
             }
         }
     }
+
+    // Para poder solicitar informacion de los pedidos
+    //
+    public boolean revisarPedidosNegocios(String negocioComparar) {
+
+        for (int i = 0; i < Pedido.getCantidad(); i++) {
+            String codigoNP = pedidos[i].getNegocioAsociado().getCodigoNegocio();
+            if (codigoNP.equals(negocioComparar)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

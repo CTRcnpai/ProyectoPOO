@@ -62,7 +62,8 @@ public class GestionNegocios {
                     editarNegocio(negocios);
                     break;
                 case "4": // Eliminar
-                    JOptionPane.showMessageDialog(null, "Opción no disponible aún");
+                    GestionPedidos pedido = new GestionPedidos();
+                    eliminarNegocio(negocios, pedido);
 
                     break;
                 case "5": // Regresar
@@ -108,6 +109,7 @@ public class GestionNegocios {
         boolean error_TipoNegocio = false;
 
         // === Petición de información ===
+        //
         // --- NOMBRE DEL NEGOCIO ---
         nombreNegocio = JOptionPane.showInputDialog("Ingrese el nombre del negocio");
 
@@ -605,7 +607,7 @@ public class GestionNegocios {
 
                         case 8:
                             JOptionPane.showMessageDialog(null, "Volviendo al menú de Gestión de Repuestos");
-                            break;
+                            return;
 
                         default:
                             JOptionPane.showMessageDialog(null, "Opción no valida, intente de nuevo");
@@ -626,9 +628,116 @@ public class GestionNegocios {
             }
         }
 
+        JOptionPane.showMessageDialog(null, """
+                                            No se encotraron negocios que coindidan
+                                            Volviendo al menú de gestión de negocios
+                                            """);
+
     }
 
-    public void eliminarNegocio(Negocio[] negocios) {
+    public void eliminarNegocio(Negocio[] negocios, GestionPedidos gestionPedidos) {
 
+        int valorBoton = 0;
+
+        do {
+
+            if (Negocio.getCantidad() == 0) {
+                JOptionPane.showMessageDialog(null, """
+                                                Por el momento no hay negocios. 
+                                                Por favor agregue un negocio para usar esta característica.
+                                                Volviendo al menú de Gestión de Negocios.
+                                                """);
+                return;
+            }
+
+            String codigoBuscar = JOptionPane.showInputDialog("""
+                                                          Ingrese el código del repuesto a editar
+                                                          Formato: R###
+                                                          """);
+
+            // --- REVISAR SI HAY PEDIDOS ASOCIADOS ---
+            if (gestionPedidos.revisarPedidosNegocios(codigoBuscar)) {
+
+                String opcionesNegocios[] = {"Aceptar"};
+
+                valorBoton = JOptionPane.showOptionDialog(
+                        null,
+                        "No es posible eliminar el negocio porque tiene pedidos asociados.",
+                        "Reintentar busqueda",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        opcionesNegocios,
+                        "Aceptar");
+
+                return;
+            }
+
+            // --- Eliminar negocio ---
+            for (int i = 0; i < Negocio.getCantidad(); i++) {
+                if (negocios[i].getCodigoNegocio().equalsIgnoreCase(codigoBuscar)) {
+
+                    String opcionesNegocios[] = {"Confirmar eliminación", "Cancelar"};
+
+                    valorBoton = JOptionPane.showOptionDialog(
+                            null,
+                            "Esta acción es permanente y no se puede deshacer"
+                            + "\nCódigo: " + negocios[i].getCodigoNegocio()
+                            + "\nNombre: " + negocios[i].getNombreNegocio()
+                            + "\nTipo: " + negocios[i].getTipoNegocio()
+                            + "\nContacto: " + negocios[i].getContactoNegocio(),
+                            "Confirmación de eliminación",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.QUESTION_MESSAGE,
+                            null,
+                            opcionesNegocios,
+                            "Cancelar");
+
+                    switch (valorBoton) {
+                        case 0: // Confirmar
+
+                            // Lista temporal
+                            Negocio[] negociosTemp = new Negocio[Negocio.getCantidad()];
+
+                            int indice = 0;
+
+                            for (int j = 0; j < Negocio.getCantidad(); j++) {
+                                if (!(negocios[j].getCodigoNegocio().equals(codigoBuscar))) {
+                                    negociosTemp[indice] = negocios[j];
+                                    indice ++;
+                                }
+                            }
+                            Negocio.setCantidad(Negocio.getCantidad() - 1);
+                            negocios = negociosTemp;
+                            JOptionPane.showMessageDialog(null, "El negocio ha sido eliminado correctamente");
+                            return;
+
+                        case 1: // Cancelar
+                            JOptionPane.showMessageDialog(null, "Operación cancelada.");
+                            return;
+
+                        default: // Cancelar / Opcion invalida
+                            JOptionPane.showMessageDialog(null, """
+                                                                Opción invalidaOperación cancelada.
+                                                                """);
+                            return;
+                    }
+                }
+            }
+
+            // --- SI NO EXISTE NIGUN NEGOCIO ---
+            String opcionesNegocios[] = {"Reintentar", "Regresar"};
+
+            valorBoton = JOptionPane.showOptionDialog(
+                    null,
+                    "No se encontró ningún negocio con el código ingresado",
+                    "Reintentar busqueda",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opcionesNegocios,
+                    "Regresar");
+
+        } while (valorBoton != 1);
     }
 }

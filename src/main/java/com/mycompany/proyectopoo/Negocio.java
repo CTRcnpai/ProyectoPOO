@@ -22,7 +22,7 @@ public class Negocio {
     private double limiteCreditoNegocio;
     private double saldoNegocio = 0;
 
-    // --- Constante que cuenta la cantidad de repuestos ---
+    // --- Constante que cuenta la cantidad de negocios ---
     private static int cantidad = 0;
 
     // === Constructor ===

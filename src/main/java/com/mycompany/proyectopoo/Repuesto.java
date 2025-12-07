@@ -45,8 +45,9 @@ public class Repuesto {
     }
 
     // === Definición de Métodos ===
+    // --- Método para mostrar todos los repuestos ---
     public void MostrarRepuestos() {
-        // --- Método para mostrar todos los repuestos ---
+
         System.out.println(formatoColumna(codigo) + "|"
                 + formatoColumna(nombreRepuesto + "") + "|"
                 + formatoColumna(marcaRepuesto + "") + "|"
@@ -70,9 +71,8 @@ public class Repuesto {
         return datoFormato;
 
     }
-    
-    // --- Método para generar códigos ---
 
+    // --- Método para generar códigos ---
     public String generarCodigo() {
         // === Asignación de código ===
         cantidad++;

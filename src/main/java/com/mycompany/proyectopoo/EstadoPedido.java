@@ -1,9 +1,7 @@
-
 package com.mycompany.proyectopoo;
 
-
 public enum EstadoPedido {
-     Borrador,
+    Borrador,
     Confirmado,
     Entregado
 }
