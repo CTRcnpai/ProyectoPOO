@@ -12,17 +12,20 @@ public class GestionNegocios {
     private Negocio negocios[] = new Negocio[40];
 
     // 6 Negociosprecargados
-//    public void repuestosPrecargados() {
-//        negocios[0] = new Negocio();
-//        negocios[1] = new Negocio();
-//        negocios[2] = new Negocio();
-//        negocios[3] = new Negocio();
-//        negocios[4] = new Negocio();
-//        negocios[5] = new Negocio();
-//
-//    }
-    // Submenú de Gestión de Negocios y bucle del menu
+    public void negociosPrecargados() {
+        negocios[0] = new Negocio("N001", "Gollo", "gollocontacto@gollo.com", "Oscar Astora", "1111-0000", "Moravia Centro, calle 10", TipoNegocio.Venta_Repuestos, 0, 2000);
+        negocios[1] = new Negocio("N002", "Guacamaya", "guacamayarepuestos@gmail.com", "Don Guacamaya", "0000-0001", "Tibas", TipoNegocio.Venta_Repuestos, 0, 2000);
+        negocios[2] = new Negocio("N003", "Autoshop", "autoshopinfo@autoshop.com", "Saul Chinchilla", "1010-1010", "Moravia", TipoNegocio.Taller, 0, 3000);
+        negocios[3] = new Negocio("N004", "Gaso San Pedro", "GSPcr@outlook.com", "Nestrons Diaz", "0101-0101", "San Pedro", TipoNegocio.Gasolinera, 0, 4000);
+        negocios[4] = new Negocio("N005", "Yeryas Arrelga", "yeryilse@gmail.com", "Sebastian Arce", "1420-0110", "La Trinidad de Moravia", TipoNegocio.Taller, 0, 3000);
+        negocios[5] = new Negocio("N006", "AlquileresCTR", "alquileresCTR@alquileresCTR.com", "CTR", "0000-0002", "Coronado", TipoNegocio.Alquiler_Vehiculos, 0, 6000);
+        //
+        //  
+    }
+
+    //Submenú de Gestión de Negocios y bucle del menu     
     public void menuGestionNegocios() {
+        negociosPrecargados();
 
         boolean menuLoop = true;
 
@@ -69,7 +72,7 @@ public class GestionNegocios {
                 case "5": // Regresar
                     JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
                     menuLoop = false;
-                    break;
+                    return;
                 // OptGestion invalida
                 case "-1":
                     JOptionPane.showMessageDialog(null, "Volviendo al menú de distribuidora");
@@ -376,6 +379,7 @@ public class GestionNegocios {
             case 0: // Si desea guardar el repuesto
                 Negocio nuevoNegocio = new Negocio(codigoNegocio, nombreNegocio, correoNegocio, contactoNegocio,
                         telefonoNegocio, direccionNegocio, tipoNegocio, saldoNegocio, limiteCreditoNegocio);
+                nuevoNegocio.setCodigoNegocio(nuevoNegocio.generarCodigo());
                 negocios[Negocio.getCantidad() - 1] = nuevoNegocio;
                 break;
             case 1: // No desea guardar el repuesto
@@ -656,7 +660,7 @@ public class GestionNegocios {
                                                           """);
 
             // --- REVISAR SI HAY PEDIDOS ASOCIADOS ---
-            if (gestionPedidos.revisarPedidosNegocios(codigoBuscar)) {
+            if (gestionPedidos.revisarPedidosNegocios(codigoBuscar).equals(codigoBuscar)) {
 
                 String opcionesNegocios[] = {"Aceptar"};
 
@@ -704,7 +708,7 @@ public class GestionNegocios {
                             for (int j = 0; j < Negocio.getCantidad(); j++) {
                                 if (!(negocios[j].getCodigoNegocio().equals(codigoBuscar))) {
                                     negociosTemp[indice] = negocios[j];
-                                    indice ++;
+                                    indice++;
                                 }
                             }
                             Negocio.setCantidad(Negocio.getCantidad() - 1);

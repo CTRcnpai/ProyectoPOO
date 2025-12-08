@@ -23,7 +23,7 @@ public class Negocio {
     private double saldoNegocio = 0;
 
     // --- Constante que cuenta la cantidad de negocios ---
-    private static int cantidad = 0;
+    private static int cantidad = 6;
 
     // === Constructor ===
     public Negocio(String codigoNegocio, String nombreNegocio, String correoNegocio, String contactoNegocio,

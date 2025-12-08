@@ -110,11 +110,11 @@ public class GestionRepuestos {
     }
 
     // Métodos
+    // --- Método para agregar repuestos ---
     private void agregarRepuesto() {
-        // --- Método para agregar repuestos ---
 
         // === Variables de metodo ===
-        String codigo = ""; // Formato: R###
+        String codigo = null; // Formato: R###
         String nombreRepuesto;
         String marcaRepuesto;
         String compatibilidadRepuesto_modelo;
@@ -474,6 +474,7 @@ public class GestionRepuestos {
             case 0: // Si desea guardar el repuesto
                 Repuesto nuevoRepuesto = new Repuesto(codigo, nombreRepuesto, marcaRepuesto, compatibilidadRepuesto_modelo, compatibilidadRepuesto_motor,
                         categoria, compatibilidadRepuesto_anho, precioVentaRepuesto, stockRepuesto, stockMinimoRepuesto);
+                nuevoRepuesto.setCodigo(nuevoRepuesto.generarCodigo());
                 repuestos[Repuesto.getCantidad() - 1] = nuevoRepuesto;
                 break;
             case 1: // No desea guardar el repuesto
@@ -699,7 +700,6 @@ public class GestionRepuestos {
                             break;
 
                         // OptGestion invalida
-
                         default:
                             JOptionPane.showMessageDialog(null, "Opción no valida, intente de nuevo");
                             opt = Integer.parseInt(JOptionPane.showInputDialog(

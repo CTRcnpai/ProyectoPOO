@@ -25,14 +25,14 @@ public class Repuesto {
     private int stockMinimoRepuesto;
 
     // --- Constante que cuenta la cantidad de repuestos ---
-    private static int cantidad = 0;
+    private static int cantidad = 20;
 
     // === Constructor ===
     public Repuesto(String codigo, String nombreRepuesto, String marcaRepuesto, String compatibilidadRepuesto_modelo,
             String compatibilidadRepuesto_motor,
             Categoria categoria, int compatibilidadRepuesto_anho, double precioVentaRepuesto, int stockRepuesto, int stockMinimoRepuesto) {
 
-        this.codigo = generarCodigo();
+        this.codigo = codigo;
         this.nombreRepuesto = nombreRepuesto;
         this.marcaRepuesto = marcaRepuesto;
         this.compatibilidadRepuesto_modelo = compatibilidadRepuesto_modelo;
